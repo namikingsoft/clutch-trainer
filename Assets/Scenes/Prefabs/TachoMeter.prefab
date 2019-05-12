@@ -90,8 +90,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxValue: 10000
+  RedlineValue: 8000
   ValueToLabel: 1
   LabelAmount: 10
+  TickAmount: 10
 --- !u!1 &4006419253594493528
 GameObject:
   m_ObjectHideFlags: 0
@@ -328,8 +330,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxValue: 10000
+  RedlineValue: 8000
   ValueToLabel: 1
   LabelAmount: 10
+  TickAmount: 10
 --- !u!1 &4006419255274044871
 GameObject:
   m_ObjectHideFlags: 0

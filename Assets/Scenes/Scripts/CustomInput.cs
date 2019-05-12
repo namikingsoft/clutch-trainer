@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CustomInput : MonoBehaviour
 {
-    public static int Gear { get; private set; }
+    public static int Gear { get; set; }
     public static float Accel { get; private set; }
     public static float Brake { get; private set; }
     public static float Clutch { get; private set; }

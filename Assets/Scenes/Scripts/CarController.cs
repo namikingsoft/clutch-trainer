@@ -40,7 +40,11 @@ public class CarController : MonoBehaviour
         {
             dynamics.StartEngine();
         }
-        dynamics.ShiftGear(CustomInput.Gear);
+        if (!dynamics.ShiftGear(CustomInput.Gear))
+        {
+            CustomInput.Gear = 0;
+            shifterHandle.GetComponent<ShifterHandle>().Shift(CustomInput.Gear);
+        }
         dynamics.SetThrottle(CustomInput.Accel);
         dynamics.SetBrake(CustomInput.Brake);
         dynamics.SetClutch(CustomInput.Clutch);

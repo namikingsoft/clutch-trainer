@@ -6,6 +6,9 @@ namespace Lib
 {
     public class CarDynamics
     {
+        private static float nonClutchRPMDiff = 100;
+        private static float permitShiftGearClutch = 0.1f;
+
         private CarEngine engine = new CarEngine();
         private CarClutch clutch = new CarClutch();
         private CarBrake brake = new CarBrake();
@@ -65,9 +68,22 @@ namespace Lib
         public void SetThrottle(float value) { engine.SetThrottle(value); }
         public void SetClutch(float value) { clutch.SetClutch(value); }
         public void SetBrake(float value) { brake.SetBrakeFactor(value); }
-        public void ShiftGear(int value)
+        public bool ShiftGear(int value)
         {
-            transmission.Shift(value);
+            if (value == transmission.GetGear())
+            {
+                return true;
+            }
+            float ratio = transmission.GetGearRatio(value);
+            float nextClutchShaftRPM = DriveShaftRPM * ratio;
+            Debug.Log(EngineShaftRPM - nextClutchShaftRPM);
+            if (clutch.GetClutch() < permitShiftGearClutch || Math.Abs(EngineShaftRPM - nextClutchShaftRPM) < nonClutchRPMDiff)
+            {
+                transmission.Shift(value);
+                return true;
+            }
+            transmission.Shift(0);
+            return false;
         }
         public void StartEngine()
         {

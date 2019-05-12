@@ -28,7 +28,7 @@ public class TachoMeter : MonoBehaviour
         needleTransform.eulerAngles = new Vector3(0, 0, GetRotation());
     }
 
-    private void Start()
+    private void Awake()
     {
         needleTransform = transform.Find("Needle");
         labelTemplateTransform = transform.Find("LabelTemplate");
