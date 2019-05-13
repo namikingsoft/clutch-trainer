@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using UnityEngine;
 
 public class CustomInput : MonoBehaviour
@@ -10,20 +11,121 @@ public class CustomInput : MonoBehaviour
     public static float Clutch { get; private set; }
     public static bool StartEngine { get; private set; }
 
+    private static int handleIndex = -1;
+    private static int dirtRemainTickCount = 0;
+    private static int bumpyRemainTickCount = 0;
+
     private void Start()
     {
         Gear = 0;
         Accel = 0;
         Brake = 0;
         Clutch = 1;
+
+        if (LogitechGSDK.LogiSteeringInitialize(false))
+        {
+            Debug.Log("LogiSteering Initialized");
+            LogitechGSDK.LogiControllerPropertiesData properties = new LogitechGSDK.LogiControllerPropertiesData();
+            properties.forceEnable = true;
+            properties.overallGain = 100;
+            properties.springGain = 100;
+            properties.damperGain = 100;
+            properties.defaultSpringEnabled = true;
+            properties.defaultSpringGain = 100;
+            properties.combinePedals = false;
+            properties.wheelRange = 900;
+            properties.gameSettingsEnabled = false;
+            properties.allowGameSettings = false;
+            LogitechGSDK.LogiSetPreferredControllerProperties(properties);
+            for (int i = 0; ; i++)
+            {
+                if (!LogitechGSDK.LogiIsConnected(i)) break;
+                if (LogitechGSDK.LogiIsDeviceConnected(i, LogitechGSDK.LOGI_DEVICE_TYPE_WHEEL))
+                {
+                    handleIndex = i;
+                    StringBuilder deviceName = new StringBuilder(256);
+                    LogitechGSDK.LogiGetFriendlyProductName(0, deviceName, 256);
+                    Debug.Log(deviceName);
+                    break;
+                }
+            }
+        }
     }
+
+    void OnApplicationQuit()
+    {
+        Debug.Log("SteeringShutdown:" + LogitechGSDK.LogiSteeringShutdown());
+    }
+
     private void Update()
     {
+
+        if (handleIndex >= 0 && LogitechGSDK.LogiUpdate() && LogitechGSDK.LogiIsConnected(handleIndex))
+        {
+            LogitechGSDK.DIJOYSTATE2ENGINES rec;
+            rec = LogitechGSDK.LogiGetStateUnity(handleIndex);
+
+            Accel = (-rec.lY + 32768f) / 65535f * 0.65f;
+            Brake = (-rec.lRz + 32768f) / 65535f;
+            Clutch = (rec.rglSlider[1] + 32768f) / 65535f;
+            if (rec.rgbButtons[8] == 128) Gear = 1;
+            else if (rec.rgbButtons[9] == 128) Gear = 2;
+            else if (rec.rgbButtons[10] == 128) Gear = 3;
+            else if (rec.rgbButtons[11] == 128) Gear = 4;
+            else if (rec.rgbButtons[12] == 128) Gear = 5;
+            else if (rec.rgbButtons[13] == 128) Gear = 6;
+            else Gear = 0;
+            StartEngine = rec.rgbButtons[18] == 128;
+            return;
+        }
         UpdateGear();
         UpdateAccel();
         UpdateBrake();
         UpdateClutch();
         UpdateStartEngine();
+    }
+
+    private void FixedUpdate()
+    {
+        if (dirtRemainTickCount > 0)
+        {
+            dirtRemainTickCount--;
+        } else
+        {
+            if (LogitechGSDK.LogiIsPlaying(handleIndex, LogitechGSDK.LOGI_FORCE_DIRT_ROAD))
+            {
+                LogitechGSDK.LogiStopDirtRoadEffect(handleIndex);
+            }
+        }
+        if (bumpyRemainTickCount > 0)
+        {
+            bumpyRemainTickCount--;
+        }
+        else
+        {
+            if (LogitechGSDK.LogiIsPlaying(handleIndex, LogitechGSDK.LOGI_FORCE_BUMPY_ROAD))
+            {
+                LogitechGSDK.LogiStopBumpyRoadEffect(handleIndex);
+            }
+        }
+    }
+
+    public static void DirtTickCount(int count, int strength)
+    {
+        dirtRemainTickCount = count;
+        if (!LogitechGSDK.LogiIsPlaying(handleIndex, LogitechGSDK.LOGI_FORCE_BUMPY_ROAD))
+        {
+            LogitechGSDK.LogiPlayDirtRoadEffect(handleIndex, strength);
+        }
+    }
+
+    public static void BumpyTickCount(int count, int strength)
+    {
+        bumpyRemainTickCount = count;
+        if (!LogitechGSDK.LogiIsPlaying(handleIndex, LogitechGSDK.LOGI_FORCE_BUMPY_ROAD))
+        {
+            LogitechGSDK.LogiPlayBumpyRoadEffect(handleIndex, strength);
+        }
     }
 
     private void UpdateGear()

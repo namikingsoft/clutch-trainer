@@ -43,6 +43,7 @@ public class CarController : MonoBehaviour
         if (!dynamics.ShiftGear(CustomInput.Gear))
         {
             CustomInput.Gear = 0;
+            CustomInput.BumpyTickCount(15, 50);
             shifterHandle.GetComponent<ShifterHandle>().Shift(CustomInput.Gear);
         }
         dynamics.SetThrottle(CustomInput.Accel);
