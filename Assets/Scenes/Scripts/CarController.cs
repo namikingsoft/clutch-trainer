@@ -15,10 +15,12 @@ public class CarController : MonoBehaviour
     public GameObject shifterHandle;
 
     private CarDynamics dynamics = new CarDynamics();
+    private AudioSource engineAudioSource;
     private string rpmLabel = "";
 
     private void Start()
     {
+        engineAudioSource = GetComponent<AudioSource>();
     }
 
     private void OnGUI()
@@ -53,6 +55,8 @@ public class CarController : MonoBehaviour
 
         EngineMeter.GetComponent<TachoMeter>().SetValue(dynamics.EngineShaftRPM);
         SpeedMeter.GetComponent<TachoMeter>().SetValue(dynamics.DriveMPS);
+
+        engineAudioSource.pitch = dynamics.EngineShaftRPM * 0.0003f;
 
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";
