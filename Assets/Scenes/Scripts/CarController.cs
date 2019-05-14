@@ -16,11 +16,14 @@ public class CarController : MonoBehaviour
 
     private CarDynamics dynamics = new CarDynamics();
     private AudioSource engineAudioSource;
+    private AudioSource engineStartAudioSource;
+    private int engineStartCountDown = -1;
     private string rpmLabel = "";
 
     private void Start()
     {
-        engineAudioSource = GetComponent<AudioSource>();
+        engineAudioSource = GetComponents<AudioSource>()[0];
+        engineStartAudioSource = GetComponents<AudioSource>()[1];
     }
 
     private void OnGUI()
@@ -38,10 +41,21 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (CustomInput.StartEngine)
+        if (CustomInput.StartEngine && engineStartCountDown < 0 && dynamics.EngineShaftRPM < 1)
+        {
+            engineStartAudioSource.Play();
+            engineStartCountDown = 25;
+        }
+        if (engineStartCountDown == 0)
         {
             dynamics.StartEngine();
+            engineStartCountDown--;
         }
+        else if (engineStartCountDown > 0)
+        {
+            engineStartCountDown--;
+        }
+
         if (!dynamics.ShiftGear(CustomInput.Gear))
         {
             CustomInput.Gear = 0;
