@@ -14,6 +14,9 @@ public class CarController : MonoBehaviour
     public GameObject SpeedMeter;
     public GameObject shifterHandle;
 
+    public GameObject Camera;
+    public GameObject Particle;
+
     private CarDynamics dynamics = new CarDynamics();
     private AudioSource engineAudioSource;
     private AudioSource engineStartAudioSource;
@@ -71,6 +74,8 @@ public class CarController : MonoBehaviour
         SpeedMeter.GetComponent<TachoMeter>().SetValue(dynamics.DriveMPS);
 
         engineAudioSource.pitch = dynamics.EngineShaftRPM * 0.0003f;
+        Camera.transform.position += new Vector3(0, 0, 1) * dynamics.DriveMPS * Time.deltaTime;
+        Particle.transform.position += new Vector3(0, 0, 1) * dynamics.DriveMPS * Time.deltaTime;
 
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";
@@ -80,5 +85,6 @@ public class CarController : MonoBehaviour
         rpmLabel += "clutch: " + CustomInput.Clutch + "\n";
         rpmLabel += "brake: " + CustomInput.Brake + "\n";
         rpmLabel += "accel: " + CustomInput.Accel + "\n";
+        rpmLabel += "adsf: " + Particle.transform.position + "\n";
     }
 }

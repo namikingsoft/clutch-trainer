@@ -87,6 +87,7 @@ public class CustomInput : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (handleIndex <= -1) return;
         if (dirtRemainTickCount > 0)
         {
             dirtRemainTickCount--;
