@@ -5,15 +5,15 @@ using UnityEngine;
 
 public class CustomInput : MonoBehaviour
 {
-    public static int Gear { get; set; }
-    public static float Accel { get; private set; }
-    public static float Brake { get; private set; }
-    public static float Clutch { get; private set; }
-    public static bool StartEngine { get; private set; }
+    public int Gear { get; set; }
+    public float Accel { get; private set; }
+    public float Brake { get; private set; }
+    public float Clutch { get; private set; }
+    public bool StartEngine { get; private set; }
 
-    private static int handleIndex = -1;
-    private static int dirtRemainTickCount = 0;
-    private static int bumpyRemainTickCount = 0;
+    private int handleIndex = -1;
+    private int dirtRemainTickCount = 0;
+    private int bumpyRemainTickCount = 0;
 
     private void Start()
     {
@@ -111,7 +111,7 @@ public class CustomInput : MonoBehaviour
         }
     }
 
-    public static void DirtTickCount(int count, int strength)
+    public void DirtTickCount(int count, int strength)
     {
         dirtRemainTickCount = count;
         if (!LogitechGSDK.LogiIsPlaying(handleIndex, LogitechGSDK.LOGI_FORCE_BUMPY_ROAD))
@@ -120,7 +120,7 @@ public class CustomInput : MonoBehaviour
         }
     }
 
-    public static void BumpyTickCount(int count, int strength)
+    public void BumpyTickCount(int count, int strength)
     {
         bumpyRemainTickCount = count;
         if (!LogitechGSDK.LogiIsPlaying(handleIndex, LogitechGSDK.LOGI_FORCE_BUMPY_ROAD))

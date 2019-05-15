@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using Lib;
 
-public class CarController : MonoBehaviour
+public class MainController : MonoBehaviour
 {
     public Slider AccelSlider;
     public Slider BrakeSlider;
@@ -18,6 +18,8 @@ public class CarController : MonoBehaviour
     public GameObject Camera;
     public GameObject Particle;
 
+    private CustomInput input;
+
     private Vector3 carPosition;
 
     private CarDynamics dynamics = new CarDynamics();
@@ -28,6 +30,8 @@ public class CarController : MonoBehaviour
 
     private void Start()
     {
+        input = transform.Find("IO").GetComponent<CustomInput>();
+
         engineAudioSource = GetComponents<AudioSource>()[0];
         engineStartAudioSource = GetComponents<AudioSource>()[1];
         carPosition = Camera.transform.position; 
@@ -40,15 +44,15 @@ public class CarController : MonoBehaviour
 
     private void Update()
     {
-        AccelSlider.value = CustomInput.Accel;
-        BrakeSlider.value = CustomInput.Brake;
-        ClutchSlider.value = CustomInput.Clutch;
-        shifterHandle.GetComponent<ShifterHandle>().Shift(CustomInput.Gear);
+        AccelSlider.value = input.Accel;
+        BrakeSlider.value = input.Brake;
+        ClutchSlider.value = input.Clutch;
+        shifterHandle.GetComponent<ShifterHandle>().Shift(input.Gear);
     }
 
     private void FixedUpdate()
     {
-        if (CustomInput.StartEngine)
+        if (input.StartEngine)
         {
             if (engineStartCountDown < 0 && dynamics.EngineShaftRPM < 1)
             {
@@ -68,15 +72,15 @@ public class CarController : MonoBehaviour
             engineStartCountDown--;
         }
 
-        if (!dynamics.ShiftGear(CustomInput.Gear))
+        if (!dynamics.ShiftGear(input.Gear))
         {
-            CustomInput.Gear = 0;
-            CustomInput.BumpyTickCount(15, 50);
-            shifterHandle.GetComponent<ShifterHandle>().Shift(CustomInput.Gear);
+            input.Gear = 0;
+            input.BumpyTickCount(15, 50);
+            shifterHandle.GetComponent<ShifterHandle>().Shift(input.Gear);
         }
-        dynamics.SetThrottle(CustomInput.Accel);
-        dynamics.SetBrake(CustomInput.Brake);
-        dynamics.SetClutch(CustomInput.Clutch);
+        dynamics.SetThrottle(input.Accel);
+        dynamics.SetBrake(input.Brake);
+        dynamics.SetClutch(input.Clutch);
         dynamics.Tick(Time.deltaTime); // 0.02 = 1 / 50
 
         EngineMeter.GetComponent<TachoMeter>().SetValue(dynamics.EngineShaftRPM);
@@ -108,9 +112,9 @@ public class CarController : MonoBehaviour
         rpmLabel += "drive rpm: " + dynamics.DriveShaftRPM + "\n";
         rpmLabel += "drive speed: " + dynamics.DriveMPS + "\n";
         rpmLabel += "\n";
-        rpmLabel += "clutch: " + CustomInput.Clutch + "\n";
-        rpmLabel += "brake: " + CustomInput.Brake + "\n";
-        rpmLabel += "accel: " + CustomInput.Accel + "\n";
+        rpmLabel += "clutch: " + input.Clutch + "\n";
+        rpmLabel += "brake: " + input.Brake + "\n";
+        rpmLabel += "accel: " + input.Accel + "\n";
         rpmLabel += "adsf: " + Camera.transform.position + "\n";
     }
 }
