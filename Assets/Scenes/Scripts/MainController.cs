@@ -19,21 +19,18 @@ public class MainController : MonoBehaviour
     public GameObject Particle;
 
     private CustomInput input;
+    private CustomAudio sound; // TODO: Base class has `audio` field 
 
     private Vector3 carPosition;
 
     private CarDynamics dynamics = new CarDynamics();
-    private AudioSource engineAudioSource;
-    private AudioSource engineStartAudioSource;
     private int engineStartCountDown = -1;
     private string rpmLabel = "";
 
     private void Start()
     {
         input = transform.Find("IO").GetComponent<CustomInput>();
-
-        engineAudioSource = GetComponents<AudioSource>()[0];
-        engineStartAudioSource = GetComponents<AudioSource>()[1];
+        sound = transform.Find("IO").GetComponent<CustomAudio>();
         carPosition = Camera.transform.position; 
     }
 
@@ -56,7 +53,7 @@ public class MainController : MonoBehaviour
         {
             if (engineStartCountDown < 0 && dynamics.EngineShaftRPM < 1)
             {
-                engineStartAudioSource.Play();
+                sound.PlayEngineStart();
                 engineStartCountDown = 25;
             }
             else dynamics.StopEngine();
@@ -86,7 +83,7 @@ public class MainController : MonoBehaviour
         EngineMeter.GetComponent<TachoMeter>().SetValue(dynamics.EngineShaftRPM);
         SpeedMeter.GetComponent<TachoMeter>().SetValue(dynamics.DriveMPS);
 
-        engineAudioSource.pitch = dynamics.EngineShaftRPM * 0.0003f;
+        sound.PitchEngine(dynamics.EngineShaftRPM * 0.0003f);
         carPosition += new Vector3(0, 0, 1) * dynamics.DriveMPS * Time.deltaTime;
         float magnitude = dynamics.DriveMPS / 175f;
         Camera.transform.position = carPosition + new Vector3(
