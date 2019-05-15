@@ -29,8 +29,8 @@ public class MainController : MonoBehaviour
 
     private void Start()
     {
-        input = transform.Find("IO").GetComponent<CustomInput>();
-        sound = transform.Find("IO").GetComponent<CustomAudio>();
+        input = transform.Find("CustomIO").GetComponent<CustomInput>();
+        sound = transform.Find("CustomIO").GetComponent<CustomAudio>();
         carPosition = Camera.transform.position; 
     }
 
