@@ -48,16 +48,21 @@ public class CarController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (CustomInput.StartEngine && engineStartCountDown < 0 && dynamics.EngineShaftRPM < 1)
+        if (CustomInput.StartEngine)
         {
-            engineStartAudioSource.Play();
-            engineStartCountDown = 25;
+            if (engineStartCountDown < 0 && dynamics.EngineShaftRPM < 1)
+            {
+                engineStartAudioSource.Play();
+                engineStartCountDown = 25;
+            }
+            else dynamics.StopEngine();
         }
         if (engineStartCountDown == 0)
         {
             dynamics.StartEngine();
             engineStartCountDown--;
         }
+
         else if (engineStartCountDown > 0)
         {
             engineStartCountDown--;

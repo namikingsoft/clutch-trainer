@@ -45,7 +45,6 @@ namespace Lib
             engine.SetMaxRPM(8000);
             engine.SetInertia(0.3f);
             engine.SetStartRPM(1000);
-            engine.SetStallRPM(350);
             engine.SetInitialConditions();
 
             wheel.SetRadius(0.2f);
@@ -85,9 +84,16 @@ namespace Lib
             transmission.Shift(0);
             return false;
         }
+
         public void StartEngine()
         {
+            engine.SetStallRPM(350);
             engine.StartEngine();
+        }
+
+        public void StopEngine()
+        {
+            engine.SetStallRPM(float.MaxValue);
         }
 
         public void Tick(float dt)
