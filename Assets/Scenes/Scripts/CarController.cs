@@ -10,9 +10,10 @@ public class CarController : MonoBehaviour
     public Slider BrakeSlider;
     public Slider ClutchSlider;
 
+    public GameObject shifterHandle;
     public GameObject EngineMeter;
     public GameObject SpeedMeter;
-    public GameObject shifterHandle;
+    public Image SpeedOverlay;
 
     public GameObject Camera;
     public GameObject Particle;
@@ -84,6 +85,18 @@ public class CarController : MonoBehaviour
             Random.Range(-1f, 1f) * magnitude,
             0);
         Particle.transform.position = carPosition + new Vector3(0, 0, 30);
+        var particle = Particle.GetComponent<ParticleSystem>();
+        var particleMain = particle.main;
+        var particleTrails = particle.trails;
+        var particleEmission = particle.emission;
+        particleMain.startSpeed = 0.1f + dynamics.DriveMPS / 200 * 200;
+        particleTrails.ratio = dynamics.DriveMPS / 200;
+        particleEmission.rateOverTime = 10 + dynamics.DriveMPS / 200 * 300;
+        SpeedOverlay.color = new Color(
+            SpeedOverlay.color.r,
+            SpeedOverlay.color.g,
+            SpeedOverlay.color.b,
+            dynamics.DriveMPS / 200 - 0.7f);
 
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";
