@@ -1,25 +1,53 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CustomAudio : MonoBehaviour
 {
-    private AudioSource engineAudioSource;
-    private AudioSource engineStartAudioSource;
+    private AudioSource engine;
+    private AudioSource engineStart;
+    private AudioSource gearChange;
+
+    private bool isPlayingEngineStart = false;
+    private bool isPlayingGearChange = false;
 
     private void Start()
     {
-        engineAudioSource = GetComponents<AudioSource>()[0];
-        engineStartAudioSource = GetComponents<AudioSource>()[1];
+        engine = GetComponents<AudioSource>()[0];
+        engineStart = GetComponents<AudioSource>()[1];
+        gearChange = GetComponents<AudioSource>()[2];
     }
 
-    public void PlayEngineStart()
+    public IEnumerator PlayEngineStart()
     {
-        engineStartAudioSource.Play();
+        if (isPlayingEngineStart) yield break;
+        isPlayingEngineStart = true;
+        engineStart.Play();
+        yield return new WaitForSeconds(0.5f);
+        isPlayingEngineStart = false;
+    }
+
+    public IEnumerator PlayGearChange()
+    {
+        if (isPlayingGearChange) yield break;
+        isPlayingGearChange = true;
+        gearChange.Play();
+        yield return new WaitForSeconds(0.2f);
+        isPlayingGearChange = false;
     }
 
     public void PitchEngine(float pitch)
     {
-        engineAudioSource.pitch = pitch;
+        if (pitch < 0.01f)
+        {
+            if (engine.isPlaying) engine.Stop();
+        }
+        else
+        {
+            if (!engine.isPlaying)
+            {
+                engine.Play();
+            }
+        }
+        engine.pitch = pitch;
     }
 }

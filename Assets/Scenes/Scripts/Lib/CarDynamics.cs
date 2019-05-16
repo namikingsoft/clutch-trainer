@@ -67,6 +67,8 @@ namespace Lib
         public void SetThrottle(float value) { engine.SetThrottle(value); }
         public void SetClutch(float value) { clutch.SetClutch(value); }
         public void SetBrake(float value) { brake.SetBrakeFactor(value); }
+
+        public int GetGear() { return transmission.GetGear(); }
         public bool ShiftGear(int value)
         {
             if (value == transmission.GetGear())

@@ -24,7 +24,9 @@ public class MainController : MonoBehaviour
     private Vector3 carPosition;
 
     private CarDynamics dynamics = new CarDynamics();
-    private int engineStartCountDown = -1;
+
+    private bool isStartingEngine = false;
+
     private string rpmLabel = "";
 
     private void Start()
@@ -51,29 +53,25 @@ public class MainController : MonoBehaviour
     {
         if (input.StartEngine)
         {
-            if (engineStartCountDown < 0 && dynamics.EngineShaftRPM < 1)
+            if (dynamics.EngineShaftRPM < 1)
             {
-                sound.PlayEngineStart();
-                engineStartCountDown = 25;
+                StartCoroutine(StartEngine());
             }
             else dynamics.StopEngine();
         }
-        if (engineStartCountDown == 0)
-        {
-            dynamics.StartEngine();
-            engineStartCountDown--;
-        }
 
-        else if (engineStartCountDown > 0)
+        if (dynamics.GetGear() != input.Gear)
         {
-            engineStartCountDown--;
-        }
-
-        if (!dynamics.ShiftGear(input.Gear))
-        {
-            input.Gear = 0;
-            input.BumpyTickCount(15, 50);
-            shifterHandle.GetComponent<ShifterHandle>().Shift(input.Gear);
+            if (dynamics.ShiftGear(input.Gear))
+            {
+                StartCoroutine(sound.PlayGearChange());
+            }
+            else
+            {
+                input.Gear = 0;
+                input.BumpyTickCount(15, 50);
+                shifterHandle.GetComponent<ShifterHandle>().Shift(input.Gear);
+            }
         }
         dynamics.SetThrottle(input.Accel);
         dynamics.SetBrake(input.Brake);
@@ -113,5 +111,14 @@ public class MainController : MonoBehaviour
         rpmLabel += "brake: " + input.Brake + "\n";
         rpmLabel += "accel: " + input.Accel + "\n";
         rpmLabel += "adsf: " + Camera.transform.position + "\n";
+    }
+
+    private IEnumerator StartEngine()
+    {
+        if (isStartingEngine) yield break;
+        isStartingEngine = true;
+        yield return sound.PlayEngineStart();
+        dynamics.StartEngine();
+        isStartingEngine = false;
     }
 }
