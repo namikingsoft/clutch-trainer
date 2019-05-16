@@ -6,13 +6,8 @@ using Lib;
 
 public class MainController : MonoBehaviour
 {
-    public Slider AccelSlider;
-    public Slider BrakeSlider;
-    public Slider ClutchSlider;
+    public UserInterface UI;
 
-    public GameObject shifterHandle;
-    public GameObject EngineMeter;
-    public GameObject SpeedMeter;
     public Image SpeedOverlay;
 
     public GameObject Camera;
@@ -31,8 +26,8 @@ public class MainController : MonoBehaviour
 
     private void Start()
     {
-        input = transform.Find("CustomIO").GetComponent<CustomInput>();
-        sound = transform.Find("CustomIO").GetComponent<CustomAudio>();
+        input = transform.Find("IO").GetComponent<CustomInput>();
+        sound = transform.Find("IO").GetComponent<CustomAudio>();
         carPosition = Camera.transform.position; 
     }
 
@@ -43,10 +38,10 @@ public class MainController : MonoBehaviour
 
     private void Update()
     {
-        AccelSlider.value = input.Accel;
-        BrakeSlider.value = input.Brake;
-        ClutchSlider.value = input.Clutch;
-        shifterHandle.GetComponent<ShifterHandle>().Shift(input.Gear);
+        UI.SetClutchValue(input.Clutch);
+        UI.SetBrakeValue(input.Brake);
+        UI.SetAccelValue(input.Accel);
+        UI.ShiftGear(input.Gear);
     }
 
     private void FixedUpdate()
@@ -60,7 +55,7 @@ public class MainController : MonoBehaviour
             else dynamics.StopEngine();
         }
 
-        if (dynamics.GetGear() != input.Gear)
+        if (dynamics.GetGear() != input.Gear) // TODO: not garigari?
         {
             if (dynamics.ShiftGear(input.Gear))
             {
@@ -70,7 +65,6 @@ public class MainController : MonoBehaviour
             {
                 input.Gear = 0;
                 input.BumpyTickCount(15, 50);
-                shifterHandle.GetComponent<ShifterHandle>().Shift(input.Gear);
             }
         }
         dynamics.SetThrottle(input.Accel);
@@ -78,8 +72,8 @@ public class MainController : MonoBehaviour
         dynamics.SetClutch(input.Clutch);
         dynamics.Tick(Time.deltaTime); // 0.02 = 1 / 50
 
-        EngineMeter.GetComponent<TachoMeter>().SetValue(dynamics.EngineShaftRPM);
-        SpeedMeter.GetComponent<TachoMeter>().SetValue(dynamics.DriveMPS);
+        UI.SetEngineValue(dynamics.EngineShaftRPM);
+        UI.SetSpeedValue(dynamics.DriveMPS);
 
         sound.PitchEngine(dynamics.EngineShaftRPM * 0.0003f);
         carPosition += new Vector3(0, 0, 1) * dynamics.DriveMPS * Time.deltaTime;

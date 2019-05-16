@@ -14,8 +14,7 @@ public class ShifterHandle : MonoBehaviour
     {
         moveFactor = moveFactor + Time.deltaTime * 6;
         if (moveFactor >= 1) moveFactor = 1;
-        transform.localPosition = Vector2.Lerp(previousPosition, currentPosition, moveFactor);
-        
+        transform.Find("Handle").localPosition = Vector2.Lerp(previousPosition, currentPosition, moveFactor);
     }
 
     public void Shift(int gear)
