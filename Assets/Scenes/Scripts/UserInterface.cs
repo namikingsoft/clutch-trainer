@@ -55,7 +55,13 @@ public class UserInterface : MonoBehaviour
         accelSlider.value = value;
     }
 
-    public IEnumerator Shake(float duration, float magnitude = 1)
+    public bool Shake(float duration, float magnitude = 1)
+    {
+        if (isShaking) return false;
+        StartCoroutine(DoShake(duration, magnitude));
+        return true;
+    }
+    public IEnumerator DoShake(float duration, float magnitude = 1)
     {
         if (isShaking) yield break;
         isShaking = true;

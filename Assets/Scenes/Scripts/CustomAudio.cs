@@ -17,7 +17,13 @@ public class CustomAudio : MonoBehaviour
         gearChange = GetComponents<AudioSource>()[2];
     }
 
-    public IEnumerator PlayEngineStart()
+    public bool PlayEngineStart()
+    {
+        if (isPlayingEngineStart) return false;
+        StartCoroutine(DoPlayEngineStart());
+        return true;
+    }
+    public IEnumerator DoPlayEngineStart()
     {
         if (isPlayingEngineStart) yield break;
         isPlayingEngineStart = true;
@@ -26,7 +32,13 @@ public class CustomAudio : MonoBehaviour
         isPlayingEngineStart = false;
     }
 
-    public IEnumerator PlayGearChange()
+    public bool PlayGearChange()
+    {
+        if (isPlayingGearChange) return false;
+        StartCoroutine(DoPlayGearChange());
+        return true;
+    }
+    public IEnumerator DoPlayGearChange()
     {
         if (isPlayingGearChange) yield break;
         isPlayingGearChange = true;

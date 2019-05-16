@@ -59,7 +59,7 @@ public class MainController : MonoBehaviour
         {
             if (dynamics.ShiftGear(input.Gear))
             {
-                StartCoroutine(sound.PlayGearChange());
+                sound.PlayGearChange();
             }
             else
             {
@@ -76,7 +76,7 @@ public class MainController : MonoBehaviour
         UI.SetSpeedValue(dynamics.DriveMPS);
 
         float uiShakeFactor = (dynamics.EngineShaftRPM / 10000f - 0.5f) / 0.5f;
-        if (uiShakeFactor > 0) StartCoroutine(UI.Shake(0.1f, uiShakeFactor * 15));
+        if (uiShakeFactor > 0) UI.Shake(0.1f, uiShakeFactor * 15);
 
         sound.PitchEngine(dynamics.EngineShaftRPM * 0.0003f);
         carPosition += new Vector3(0, 0, 1) * dynamics.DriveMPS * Time.deltaTime;
@@ -114,7 +114,7 @@ public class MainController : MonoBehaviour
     {
         if (isStartingEngine) yield break;
         isStartingEngine = true;
-        yield return sound.PlayEngineStart();
+        yield return sound.DoPlayEngineStart();
         dynamics.StartEngine();
         isStartingEngine = false;
     }
