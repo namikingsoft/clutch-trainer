@@ -17,6 +17,7 @@ public class MainController : MonoBehaviour
     private CustomAudio sound; // TODO: Base class has `audio` field 
 
     private Vector3 carPosition;
+    private float maxSpeed;
 
     private CarDynamics dynamics = new CarDynamics();
 
@@ -28,7 +29,8 @@ public class MainController : MonoBehaviour
     {
         input = transform.Find("IO").GetComponent<CustomInput>();
         sound = transform.Find("IO").GetComponent<CustomAudio>();
-        carPosition = Camera.transform.position; 
+        carPosition = Camera.transform.position;
+        maxSpeed = dynamics.CalculateMaxMPS();
     }
 
     private void OnGUI()
@@ -72,11 +74,14 @@ public class MainController : MonoBehaviour
         dynamics.SetClutch(input.Clutch);
         dynamics.Tick(Time.deltaTime); // 0.02 = 1 / 50
 
+        float engineShaftRPMPerMax = dynamics.EngineShaftRPM / dynamics.GetMaxEnginePRM();
+        float driveSpeedPerMax = dynamics.DriveMPS / maxSpeed;
+
         UI.SetEngineValue(dynamics.EngineShaftRPM);
         UI.SetSpeedValue(dynamics.DriveMPS);
 
-        float uiShakeFactor = (dynamics.EngineShaftRPM / 10000f - 0.5f) / 0.5f;
-        if (uiShakeFactor > 0) UI.Shake(0.1f, uiShakeFactor * 15);
+        float uiShakeFactor = (engineShaftRPMPerMax - 0.5f) / 0.5f;
+        if (uiShakeFactor > 0) UI.Shake(0.1f, uiShakeFactor * 12.5f);
 
         sound.PitchEngine(dynamics.EngineShaftRPM * 0.0003f);
         carPosition += new Vector3(0, 0, 1) * dynamics.DriveMPS * Time.deltaTime;
@@ -90,14 +95,14 @@ public class MainController : MonoBehaviour
         var particleMain = particle.main;
         var particleTrails = particle.trails;
         var particleEmission = particle.emission;
-        particleMain.startSpeed = 0.1f + dynamics.DriveMPS / 200 * 200;
-        particleTrails.ratio = dynamics.DriveMPS / 200;
-        particleEmission.rateOverTime = 10 + dynamics.DriveMPS / 200 * 300;
+        particleMain.startSpeed = 0.1f + driveSpeedPerMax * 200;
+        particleTrails.ratio = driveSpeedPerMax;
+        particleEmission.rateOverTime = 10 + driveSpeedPerMax * 300;
         SpeedOverlay.color = new Color(
             SpeedOverlay.color.r,
             SpeedOverlay.color.g,
             SpeedOverlay.color.b,
-            dynamics.DriveMPS / 200 - 0.7f);
+            driveSpeedPerMax - 0.7f);
 
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";

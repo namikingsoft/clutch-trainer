@@ -64,6 +64,8 @@ namespace Lib
             EngineShaftRPM = engine.GetRPM();
         }
 
+        public float GetMaxEnginePRM() { return engine.GetMaxRPM(); }
+
         public void SetThrottle(float value) { engine.SetThrottle(value); }
         public void SetClutch(float value) { clutch.SetClutch(value); }
         public void SetBrake(float value) { brake.SetBrakeFactor(value); }
@@ -96,6 +98,14 @@ namespace Lib
         public void StopEngine()
         {
             engine.SetStallRPM(float.MaxValue);
+        }
+
+        public float CalculateMaxMPS()
+        {
+            float maxEngineAngVel = engine.GetMaxRPM() * (float)Math.PI / 30.0f;
+            float maxGearRatio = transmission.GetGearRatio(transmission.GetForwardGears());
+            float maxDriveShaftSpeed = maxEngineAngVel / maxGearRatio; 
+            return maxDriveShaftSpeed * wheel.GetRadius();
         }
 
         public void Tick(float dt)
