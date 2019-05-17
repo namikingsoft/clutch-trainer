@@ -79,7 +79,6 @@ namespace Lib
             }
             float ratio = transmission.GetGearRatio(value);
             float nextClutchShaftRPM = DriveShaftRPM * ratio;
-            Debug.Log(EngineShaftRPM - nextClutchShaftRPM);
             if (clutch.GetClutch() < permitShiftGearClutch || Math.Abs(EngineShaftRPM - nextClutchShaftRPM) < nonClutchRPMDiff)
             {
                 transmission.Shift(value);

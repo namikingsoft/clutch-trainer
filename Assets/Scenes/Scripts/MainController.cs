@@ -7,8 +7,7 @@ using Lib;
 public class MainController : MonoBehaviour
 {
     public UserInterface UI;
-
-    public Image SpeedOverlay;
+    public Overlay Overlay;
 
     public GameObject Camera;
     public GameObject Particle;
@@ -62,6 +61,7 @@ public class MainController : MonoBehaviour
             if (dynamics.ShiftGear(input.Gear))
             {
                 sound.PlayGearChange();
+                Overlay.Flush(0.4f, 0.4f);
             }
             else
             {
@@ -98,11 +98,7 @@ public class MainController : MonoBehaviour
         particleMain.startSpeed = 0.1f + driveSpeedPerMax * 200;
         particleTrails.ratio = driveSpeedPerMax;
         particleEmission.rateOverTime = 10 + driveSpeedPerMax * 300;
-        SpeedOverlay.color = new Color(
-            SpeedOverlay.color.r,
-            SpeedOverlay.color.g,
-            SpeedOverlay.color.b,
-            driveSpeedPerMax - 0.7f);
+        Overlay.SetSpeedFactor(driveSpeedPerMax - 0.7f);
 
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";
