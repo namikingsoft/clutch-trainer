@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class EngineScorer
 {
-    private int sumTickCount = 25; // 0.5 sec on unity
-    private float thresholdEngineShaftRPMDiffSumTick = 1000;
+    private int sumTickCount = 10; // 0.2 sec on unity
+    private float thresholdEngineShaftRPMDiffSumTick = 300f;
 
     private Queue<float> engineShaftRPMDiffQueue = new Queue<float>();
 
@@ -19,7 +19,7 @@ public class EngineScorer
     }
 
     // safe less than 1f
-    public float CalcEngineShaftRPMScore(float engineShaftRPM)
+    public float CalcEngineShaftRPMScore(int gear, float clutchRate, float engineShaftRPM)
     {
         engineShaftRPMDiffQueue.Enqueue(Math.Abs(engineShaftRPM - previousEngineShaftSpeed));
         engineShaftRPMDiffQueue.Dequeue();
@@ -30,6 +30,7 @@ public class EngineScorer
         {
             diffSumTick += diff;
         }
-        return diffSumTick / thresholdEngineShaftRPMDiffSumTick;
+        float score = diffSumTick / thresholdEngineShaftRPMDiffSumTick;
+        return gear > 0 && clutchRate > 0.1f ? score : score / 2.5f;
     }
 }

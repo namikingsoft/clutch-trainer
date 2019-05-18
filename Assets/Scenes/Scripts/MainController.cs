@@ -117,16 +117,15 @@ public class MainController : MonoBehaviour
         particleEmission.rateOverTime = 10 + driveSpeedPerMax * 300;
         ui.ApplySpeedOverlay(driveSpeedPerMax - 0.7f);
 
-        float engineDiffScore = engineScorer.CalcEngineShaftRPMScore(dynamics.EngineShaftRPM);
+        float engineDiffScore = engineScorer.CalcEngineShaftRPMScore(
+            dynamics.GetGear(),
+            input.Clutch,
+            dynamics.EngineShaftRPM);
 
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";
         rpmLabel += "drive rpm: " + dynamics.DriveShaftRPM + "\n";
         rpmLabel += "drive speed: " + dynamics.DriveMPS + "\n";
-        rpmLabel += "\n";
-        rpmLabel += "clutch: " + input.Clutch + "\n";
-        rpmLabel += "brake: " + input.Brake + "\n";
-        rpmLabel += "accel: " + input.Accel + "\n";
         rpmLabel += "\n";
         rpmLabel += "engine score: " + engineDiffScore + "\n";
         rpmLabel += "position: " + Camera.transform.position + "\n";
