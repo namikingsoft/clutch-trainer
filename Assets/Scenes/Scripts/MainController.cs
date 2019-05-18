@@ -24,6 +24,8 @@ public class MainController : MonoBehaviour
 
     private bool isStartingEngine = false;
 
+    private bool prevEngineStoped = true;
+
     private string rpmLabel = "";
 
     private void Start()
@@ -57,6 +59,12 @@ public class MainController : MonoBehaviour
             if (dynamics.IsEngineStoped()) StartCoroutine(StartEngine());
             else dynamics.StopEngine();
         }
+
+        if (prevEngineStoped != dynamics.IsEngineStoped() && dynamics.IsEngineStoped())
+        {
+            scoreEffect.Stalled();
+        }
+        prevEngineStoped = dynamics.IsEngineStoped();
 
         if (dynamics.GetGear() != input.Gear) // TODO: not garigari?
         {
@@ -130,6 +138,7 @@ public class MainController : MonoBehaviour
         isStartingEngine = true;
         yield return sound.DoPlayEngineStart();
         dynamics.StartEngine();
+        scoreEffect.EngineStarted();
         isStartingEngine = false;
     }
 }

@@ -29,7 +29,7 @@ namespace Lib
         //---- For info only
         private float frictionTorque = 0;
         private float combustionTorque = 0;
-        private bool stalled = false;
+        private bool stalled = true;
 
         public void SetInertia(float i)
         {

@@ -8,13 +8,57 @@ public class ScoreEffect : MonoBehaviour
     private Image flushOverlay;
     private bool isFlushing = false;
 
+    private GameObject engineStartedText;
+    private bool isDoEngineStarted = false;
+
+    private GameObject stalledText;
+    private bool isDoStalled = false;
+
     private GameObject gravitateText;
     private bool isDoGravitate = false;
 
     private void Start()
     {
         flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
+        engineStartedText = transform.Find("Engine Started Text").gameObject;
+        stalledText = transform.Find("Stalled Text").gameObject;
         gravitateText = transform.Find("Gravitate Text").gameObject;
+    }
+
+    public bool EngineStarted()
+    {
+        if (isDoEngineStarted) return false;
+        StartCoroutine(DoEngineStarted());
+        return true;
+    }
+    public IEnumerator DoEngineStarted()
+    {
+        if (isDoEngineStarted) yield break;
+        isDoEngineStarted = true;
+
+        engineStartedText.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        engineStartedText.SetActive(false);
+
+        isDoEngineStarted = false;
+    }
+
+    public bool Stalled()
+    {
+        if (isDoStalled) return false;
+        StartCoroutine(DoStalled());
+        return true;
+    }
+    public IEnumerator DoStalled()
+    {
+        if (isDoStalled) yield break;
+        isDoStalled = true;
+
+        stalledText.SetActive(true);
+        yield return new WaitForSeconds(1.5f);
+        stalledText.SetActive(false);
+
+        isDoStalled = false;
     }
 
     public bool Gravitate()
@@ -31,7 +75,9 @@ public class ScoreEffect : MonoBehaviour
         gravitateText.SetActive(true);
         yield return new WaitForSeconds(.5f);
         StartCoroutine(DoFlush(0.5f, 1f));
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
+        StartCoroutine(DoFlush(0.25f, 0.5f));
+        yield return new WaitForSeconds(0.5f);
         gravitateText.SetActive(false);
 
         isDoGravitate = false;

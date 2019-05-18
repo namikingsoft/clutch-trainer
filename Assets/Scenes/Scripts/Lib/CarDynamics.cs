@@ -84,7 +84,7 @@ namespace Lib
             engine.SetStallRPM(float.MaxValue);
         }
 
-        public bool IsEngineStoped() { return !engine.IsCombusting() && engine.GetRPM() < engineStallRPM; }
+        public bool IsEngineStoped() { return !engine.IsCombusting() && engine.GetRPM() < engineStallRPM / 2f; }
 
         public float CalculateMaxMPS()
         {
