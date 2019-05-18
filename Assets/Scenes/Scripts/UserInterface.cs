@@ -18,13 +18,13 @@ public class UserInterface : MonoBehaviour
     private void Start()
     {
         shifterHandle = transform.Find("Shifter").GetComponent<ShifterHandle>();
-        engineMeter = transform.Find("EngineMeter").GetComponent<TachoMeter>();
-        speedMeter = transform.Find("SpeedMeter").GetComponent<TachoMeter>();
+        engineMeter = transform.Find("Engine Meter").GetComponent<TachoMeter>();
+        speedMeter = transform.Find("Speed Meter").GetComponent<TachoMeter>();
 
-        clutchSlider = transform.Find("ClutchSlider").GetComponent<Slider>();
-        brakeSlider = transform.Find("BrakeSlider").GetComponent<Slider>();
-        accelSlider = transform.Find("AccelSlider").GetComponent<Slider>(); 
-        speedOverlay = transform.Find("SpeedOverlay").GetComponent<Image>();
+        clutchSlider = transform.Find("Clutch Slider").GetComponent<Slider>();
+        brakeSlider = transform.Find("Brake Slider").GetComponent<Slider>();
+        accelSlider = transform.Find("Accel Slider").GetComponent<Slider>(); 
+        speedOverlay = transform.Find("Speed Overlay").GetComponent<Image>();
     }
 
     public void ShiftGear(int gear)

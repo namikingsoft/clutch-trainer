@@ -13,8 +13,8 @@ public class ScoreEffect : MonoBehaviour
 
     private void Start()
     {
-        flushOverlay = transform.Find("FlushOverlay").GetComponent<Image>();
-        greatText = transform.Find("Great").gameObject;
+        flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
+        greatText = transform.Find("Great Text").gameObject;
     }
 
     public bool Great()
