@@ -68,7 +68,7 @@ public class MainController : MonoBehaviour
                 dynamics.DriveShaftRPM);
             if (canGearChange)
             {
-                scoreEffect.Great();
+                scoreEffect.Gravitate();
                 dynamics.ShiftGear(input.Gear);
                 sound.PlayGearChange();
             }

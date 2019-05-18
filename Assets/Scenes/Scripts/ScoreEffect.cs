@@ -8,32 +8,33 @@ public class ScoreEffect : MonoBehaviour
     private Image flushOverlay;
     private bool isFlushing = false;
 
-    private GameObject greatText;
-    private bool isDoGreat = false;
+    private GameObject gravitateText;
+    private bool isDoGravitate = false;
 
     private void Start()
     {
         flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
-        greatText = transform.Find("Great Text").gameObject;
+        gravitateText = transform.Find("Gravitate Text").gameObject;
     }
 
-    public bool Great()
+    public bool Gravitate()
     {
         if (isFlushing) return false;
-        StartCoroutine(DoGreat());
+        StartCoroutine(DoGravitate());
         return true;
     }
-    public IEnumerator DoGreat()
+    public IEnumerator DoGravitate()
     {
-        if (isDoGreat) yield break;
-        isDoGreat = true;
+        if (isDoGravitate) yield break;
+        isDoGravitate = true;
 
-        greatText.SetActive(true);
-        StartCoroutine(DoFlush(0.4f, 0.4f));
-        yield return new WaitForSeconds(1f);
-        greatText.SetActive(false);
+        gravitateText.SetActive(true);
+        yield return new WaitForSeconds(.5f);
+        StartCoroutine(DoFlush(0.5f, 1f));
+        yield return new WaitForSeconds(2f);
+        gravitateText.SetActive(false);
 
-        isDoGreat = false;
+        isDoGravitate = false;
     }
 
     private IEnumerator DoFlush(float duration, float strength = 0.5f)
@@ -41,8 +42,8 @@ public class ScoreEffect : MonoBehaviour
         if (isFlushing) yield break;
         isFlushing = true;
 
-        float durationForward = (1f / 4f) * duration;
-        float durationBack = (3f / 4f) * duration;
+        float durationForward = (2f / 5f) * duration;
+        float durationBack = (3f / 5f) * duration;
 
         float elapsed = 0f;
         while (elapsed < durationForward)
