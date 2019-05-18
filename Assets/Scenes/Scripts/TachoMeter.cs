@@ -28,15 +28,19 @@ public class TachoMeter : MonoBehaviour
         needleTransform.eulerAngles = new Vector3(0, 0, GetRotation());
     }
 
-    private void Awake()
+    private void Start()
     {
         needleTransform = transform.Find("Needle");
         labelTemplateTransform = transform.Find("LabelTemplate");
         tickTemplateTransform = transform.Find("TickTemplate");
-        labelTemplateTransform.gameObject.SetActive(false);
-        tickTemplateTransform.gameObject.SetActive(false);
+        if (labelTemplateTransform && labelTemplateTransform.gameObject) labelTemplateTransform.gameObject.SetActive(false);
+        if (tickTemplateTransform && tickTemplateTransform.gameObject) tickTemplateTransform.gameObject.SetActive(false);
         CreateLabels();
         CreateTicks();
+    }
+
+    private void Awake()
+    {
     }
 
     private void CreateLabels()
