@@ -6,8 +6,8 @@ using Lib;
 
 public class MainController : MonoBehaviour
 {
-    public UserInterface UI;
-    public Overlay Overlay;
+    public UserInterface ui;
+    public ScoreEffect scoreEffect;
 
     public GameObject Camera;
     public GameObject Particle;
@@ -44,10 +44,10 @@ public class MainController : MonoBehaviour
 
     private void Update()
     {
-        UI.SetClutchValue(input.Clutch);
-        UI.SetBrakeValue(input.Brake);
-        UI.SetAccelValue(input.Accel);
-        UI.ShiftGear(input.Gear);
+        ui.SetClutchValue(input.Clutch);
+        ui.SetBrakeValue(input.Brake);
+        ui.SetAccelValue(input.Accel);
+        ui.ShiftGear(input.Gear);
     }
 
     private void FixedUpdate()
@@ -70,7 +70,7 @@ public class MainController : MonoBehaviour
             {
                 dynamics.ShiftGear(input.Gear);
                 sound.PlayGearChange();
-                Overlay.Flush(0.4f, 0.4f);
+                scoreEffect.Flush(0.4f, 0.4f);
             }
             else
             {
@@ -86,11 +86,11 @@ public class MainController : MonoBehaviour
         float engineShaftRPMPerMax = dynamics.EngineShaftRPM / dynamics.GetMaxEnginePRM();
         float driveSpeedPerMax = dynamics.DriveMPS / maxSpeed;
 
-        UI.SetEngineValue(dynamics.EngineShaftRPM);
-        UI.SetSpeedValue(dynamics.DriveMPS);
+        ui.SetEngineValue(dynamics.EngineShaftRPM);
+        ui.SetSpeedValue(dynamics.DriveMPS);
 
         float uiShakeFactor = (engineShaftRPMPerMax - 0.5f) / 0.5f;
-        if (uiShakeFactor > 0) UI.Shake(0.1f, uiShakeFactor * 12.5f);
+        if (uiShakeFactor > 0) ui.Shake(0.1f, uiShakeFactor * 12.5f);
 
         sound.PitchEngine(dynamics.EngineShaftRPM * 0.0003f);
         carPosition += new Vector3(0, 0, 1) * dynamics.DriveMPS * Time.deltaTime;
@@ -107,7 +107,7 @@ public class MainController : MonoBehaviour
         particleMain.startSpeed = 0.1f + driveSpeedPerMax * 200;
         particleTrails.ratio = driveSpeedPerMax;
         particleEmission.rateOverTime = 10 + driveSpeedPerMax * 300;
-        Overlay.SetSpeedFactor(driveSpeedPerMax - 0.7f);
+        ui.ApplySpeedOverlay(driveSpeedPerMax - 0.7f);
 
         float engineDiffScore = engineScorer.CalcEngineShaftRPMScore(dynamics.EngineShaftRPM);
 

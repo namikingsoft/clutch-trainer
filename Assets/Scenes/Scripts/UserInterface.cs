@@ -11,6 +11,7 @@ public class UserInterface : MonoBehaviour
     private Slider clutchSlider;
     private Slider brakeSlider;
     private Slider accelSlider;
+    private Image speedOverlay;
 
     private bool isShaking = false;
 
@@ -22,7 +23,8 @@ public class UserInterface : MonoBehaviour
 
         clutchSlider = transform.Find("ClutchSlider").GetComponent<Slider>();
         brakeSlider = transform.Find("BrakeSlider").GetComponent<Slider>();
-        accelSlider = transform.Find("AccelSlider").GetComponent<Slider>();
+        accelSlider = transform.Find("AccelSlider").GetComponent<Slider>(); 
+        speedOverlay = transform.Find("SpeedOverlay").GetComponent<Image>();
     }
 
     public void ShiftGear(int gear)
@@ -83,5 +85,14 @@ public class UserInterface : MonoBehaviour
         transform.localPosition = pos;
 
         isShaking = false;
+    }
+
+    public void ApplySpeedOverlay(float rate)
+    {
+        speedOverlay.color = new Color(
+            speedOverlay.color.r,
+            speedOverlay.color.g,
+            speedOverlay.color.b,
+            rate);
     }
 }
