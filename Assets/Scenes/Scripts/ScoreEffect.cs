@@ -8,18 +8,35 @@ public class ScoreEffect : MonoBehaviour
     private Image flushOverlay;
     private bool isFlushing = false;
 
+    private GameObject greatText;
+    private bool isDoGreat = false;
+
     private void Start()
     {
         flushOverlay = transform.Find("FlushOverlay").GetComponent<Image>();
+        greatText = transform.Find("Great").gameObject;
     }
 
-    public bool Flush(float duration, float strength = 0.5f)
+    public bool Great()
     {
         if (isFlushing) return false;
-        StartCoroutine(DoFlush(duration, strength));
+        StartCoroutine(DoGreat());
         return true;
     }
-    public IEnumerator DoFlush(float duration, float strength = 0.5f)
+    public IEnumerator DoGreat()
+    {
+        if (isDoGreat) yield break;
+        isDoGreat = true;
+
+        greatText.SetActive(true);
+        StartCoroutine(DoFlush(0.4f, 0.4f));
+        yield return new WaitForSeconds(1f);
+        greatText.SetActive(false);
+
+        isDoGreat = false;
+    }
+
+    private IEnumerator DoFlush(float duration, float strength = 0.5f)
     {
         if (isFlushing) yield break;
         isFlushing = true;
