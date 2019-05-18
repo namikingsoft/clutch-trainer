@@ -44,7 +44,7 @@ public class UserInterface : MonoBehaviour
 
     public void SetClutchValue(float value)
     {
-        clutchSlider.value = value; 
+        clutchSlider.value = 1f - value; 
     }
 
     public void SetBrakeValue(float value)
