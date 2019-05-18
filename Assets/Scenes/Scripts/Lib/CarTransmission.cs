@@ -63,6 +63,8 @@ namespace Lib
 
         public float GetCurrentGearRatio() { return GetGearRatio(gear); }
 
+        public Dictionary<int, float> GetGearRatios() { return new Dictionary<int, float>(gearRatios); }
+
         // Get the torque on the driveshaft due to given clutch torque
         public float GetTorque(float clutchTorque) { return clutchTorque * gearRatios[gear]; }
 

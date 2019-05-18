@@ -6,8 +6,7 @@ namespace Lib
 {
     public class CarDynamics
     {
-        private static float nonClutchRPMDiff = 100;
-        private static float permitShiftGearClutch = 0.1f;
+        private const float engineStallRPM = 350f;
 
         private CarEngine engine = new CarEngine();
         private CarClutch clutch = new CarClutch();
@@ -71,26 +70,12 @@ namespace Lib
         public void SetBrake(float value) { brake.SetBrakeFactor(value); }
 
         public int GetGear() { return transmission.GetGear(); }
-        public bool ShiftGear(int value)
-        {
-            if (value == transmission.GetGear())
-            {
-                return true;
-            }
-            float ratio = transmission.GetGearRatio(value);
-            float nextClutchShaftRPM = DriveShaftRPM * ratio;
-            if (clutch.GetClutch() < permitShiftGearClutch || Math.Abs(EngineShaftRPM - nextClutchShaftRPM) < nonClutchRPMDiff)
-            {
-                transmission.Shift(value);
-                return true;
-            }
-            transmission.Shift(0);
-            return false;
-        }
+        public void ShiftGear(int value) { transmission.Shift(value); }
+        public Dictionary<int, float> GetGearRatios() { return transmission.GetGearRatios(); }
 
         public void StartEngine()
         {
-            engine.SetStallRPM(350);
+            engine.SetStallRPM(engineStallRPM);
             engine.StartEngine();
         }
 
@@ -98,6 +83,8 @@ namespace Lib
         {
             engine.SetStallRPM(float.MaxValue);
         }
+
+        public bool IsEngineStoped() { return !engine.IsCombusting() && engine.GetRPM() < engineStallRPM; }
 
         public float CalculateMaxMPS()
         {

@@ -19,6 +19,7 @@ public class MainController : MonoBehaviour
     private float maxSpeed;
 
     private CarDynamics dynamics = new CarDynamics();
+    private ClutchScorer clutchScorer;
 
     private bool isStartingEngine = false;
 
@@ -26,6 +27,7 @@ public class MainController : MonoBehaviour
 
     private void Start()
     {
+        clutchScorer = new ClutchScorer(dynamics.GetGearRatios());
         input = transform.Find("IO").GetComponent<CustomInput>();
         sound = transform.Find("IO").GetComponent<CustomAudio>();
         carPosition = Camera.transform.position;
@@ -49,17 +51,21 @@ public class MainController : MonoBehaviour
     {
         if (input.StartEngine)
         {
-            if (dynamics.EngineShaftRPM < 1)
-            {
-                StartCoroutine(StartEngine());
-            }
+            if (dynamics.IsEngineStoped()) StartCoroutine(StartEngine());
             else dynamics.StopEngine();
         }
 
         if (dynamics.GetGear() != input.Gear) // TODO: not garigari?
         {
-            if (dynamics.ShiftGear(input.Gear))
+            bool canGearChange = clutchScorer.Calculate(
+                dynamics.GetGear(),
+                input.Gear,
+                input.Clutch,
+                dynamics.EngineShaftRPM,
+                dynamics.DriveShaftRPM);
+            if (canGearChange)
             {
+                dynamics.ShiftGear(input.Gear);
                 sound.PlayGearChange();
                 Overlay.Flush(0.4f, 0.4f);
             }
