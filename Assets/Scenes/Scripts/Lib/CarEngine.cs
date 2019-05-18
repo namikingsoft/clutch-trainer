@@ -145,7 +145,7 @@ namespace Lib
             }
 
             frictionTorque = GetFrictionTorque(curAngVel, fricFactor, throttlePosition);
-            if (stalled) { frictionTorque *= 25.0f; } // Try to mimic engine static friction
+            if (stalled) { frictionTorque *= 30.0f; } // Try to mimic engine static friction
         }
 
         public void ApplyForces()

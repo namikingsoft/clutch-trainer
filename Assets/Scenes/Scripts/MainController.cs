@@ -20,6 +20,7 @@ public class MainController : MonoBehaviour
 
     private CarDynamics dynamics = new CarDynamics();
     private ClutchScorer clutchScorer;
+    private EngineScorer engineScorer;
 
     private bool isStartingEngine = false;
 
@@ -28,6 +29,8 @@ public class MainController : MonoBehaviour
     private void Start()
     {
         clutchScorer = new ClutchScorer(dynamics.GetGearRatios());
+        engineScorer = new EngineScorer();
+
         input = transform.Find("IO").GetComponent<CustomInput>();
         sound = transform.Find("IO").GetComponent<CustomAudio>();
         carPosition = Camera.transform.position;
@@ -106,6 +109,8 @@ public class MainController : MonoBehaviour
         particleEmission.rateOverTime = 10 + driveSpeedPerMax * 300;
         Overlay.SetSpeedFactor(driveSpeedPerMax - 0.7f);
 
+        float engineDiffScore = engineScorer.CalcEngineShaftRPMScore(dynamics.EngineShaftRPM);
+
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";
         rpmLabel += "drive rpm: " + dynamics.DriveShaftRPM + "\n";
@@ -114,7 +119,9 @@ public class MainController : MonoBehaviour
         rpmLabel += "clutch: " + input.Clutch + "\n";
         rpmLabel += "brake: " + input.Brake + "\n";
         rpmLabel += "accel: " + input.Accel + "\n";
-        rpmLabel += "adsf: " + Camera.transform.position + "\n";
+        rpmLabel += "\n";
+        rpmLabel += "engine score: " + engineDiffScore + "\n";
+        rpmLabel += "position: " + Camera.transform.position + "\n";
     }
 
     private IEnumerator StartEngine()
