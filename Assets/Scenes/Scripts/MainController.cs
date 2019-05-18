@@ -122,6 +122,8 @@ public class MainController : MonoBehaviour
             input.Clutch,
             dynamics.EngineShaftRPM);
 
+        if (engineDiffScore > 1f) scoreEffect.Ouch();
+
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";
         rpmLabel += "drive rpm: " + dynamics.DriveShaftRPM + "\n";

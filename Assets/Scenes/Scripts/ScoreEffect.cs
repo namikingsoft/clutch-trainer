@@ -14,15 +14,23 @@ public class ScoreEffect : MonoBehaviour
     private GameObject stalledText;
     private bool isDoStalled = false;
 
+    private GameObject ouchText;
+    private bool isDoOuch = false;
+
     private GameObject gravitateText;
     private bool isDoGravitate = false;
+
+    private TransformShaker ouchShaker;
 
     private void Start()
     {
         flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
         engineStartedText = transform.Find("Engine Started Text").gameObject;
         stalledText = transform.Find("Stalled Text").gameObject;
+        ouchText = transform.Find("Ouch Text").gameObject;
         gravitateText = transform.Find("Gravitate Text").gameObject;
+
+        ouchShaker = new TransformShaker(ouchText.transform);
     }
 
     public bool EngineStarted()
@@ -59,6 +67,25 @@ public class ScoreEffect : MonoBehaviour
         stalledText.SetActive(false);
 
         isDoStalled = false;
+    }
+
+    public bool Ouch()
+    {
+        if (isDoOuch) return false;
+        StartCoroutine(DoOuch());
+        return true;
+    }
+    public IEnumerator DoOuch()
+    {
+        if (isDoOuch) yield break;
+        isDoOuch = true;
+
+        ouchText.SetActive(true);
+        StartCoroutine(ouchShaker.Do(1.5f, 2.5f));
+        yield return new WaitForSeconds(1.5f);
+        ouchText.SetActive(false);
+
+        isDoOuch = false;
     }
 
     public bool Gravitate()
