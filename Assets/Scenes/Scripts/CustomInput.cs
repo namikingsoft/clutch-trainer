@@ -9,7 +9,7 @@ public class CustomInput : MonoBehaviour
     public float Accel { get; private set; }
     public float Brake { get; private set; }
     public float Clutch { get; private set; }
-    public bool StartEngine { get; private set; }
+    public bool EngineToggle { get; private set; }
 
     private int handleIndex = -1;
     private int dirtRemainTickCount = 0;
@@ -75,7 +75,7 @@ public class CustomInput : MonoBehaviour
             else if (rec.rgbButtons[12] == 128) Gear = 5;
             else if (rec.rgbButtons[13] == 128) Gear = 6;
             else Gear = 0;
-            StartEngine = rec.rgbButtons[18] == 128;
+            EngineToggle = rec.rgbButtons[18] == 128;
             return;
         }
         UpdateGear();
@@ -218,6 +218,6 @@ public class CustomInput : MonoBehaviour
 
     private void UpdateStartEngine()
     {
-        StartEngine = Input.GetKey(KeyCode.Return);
+        EngineToggle = Input.GetKey(KeyCode.Return);
     }
 }

@@ -49,7 +49,7 @@ public class MainController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (input.StartEngine)
+        if (input.EngineToggle)
         {
             if (dynamics.IsEngineStoped()) StartCoroutine(StartEngine());
             else dynamics.StopEngine();
