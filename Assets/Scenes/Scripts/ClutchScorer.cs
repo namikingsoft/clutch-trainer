@@ -5,7 +5,7 @@ using Lib;
 public class ClutchScorer
 {
     private Dictionary<int, float> gearRatios;
-    private float nonClutchRPMDiff = 100;
+    private float nonClutchRPMDiff = 50f;
     private float permitShiftGearClutch = 0.1f;
 
     public ClutchScorer(Dictionary<int, float> gearRatios)
@@ -13,10 +13,18 @@ public class ClutchScorer
         this.gearRatios = gearRatios;
     }
 
-    public bool Calculate(int currentGear, int nextGear, float clutchRate, float engineShaftRPM, float driveShaftRPM)
+    public bool Calculate(
+        int currentGear,
+        int nextGear,
+        float clutchRate,
+        float accelRate,
+        float engineShaftRPM,
+        float driveShaftRPM)
     {
-        if (currentGear == nextGear)
-        {
+        if (
+            currentGear == nextGear ||
+            // To N if accel is zero
+            (nextGear == 0 && accelRate <= float.Epsilon)) {
             return true;
         }
         float ratio = gearRatios[nextGear];

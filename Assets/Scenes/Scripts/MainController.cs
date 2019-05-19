@@ -74,6 +74,7 @@ public class MainController : MonoBehaviour
                 dynamics.GetGear(),
                 input.Gear,
                 input.Clutch,
+                input.Accel,
                 dynamics.EngineShaftRPM,
                 dynamics.DriveShaftRPM);
             if (canGearChange)
