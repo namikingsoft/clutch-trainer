@@ -60,6 +60,8 @@ public class MainController : MonoBehaviour
             else dynamics.StopEngine();
         }
 
+        scoreEffect.SetVisibleOfPushEnter(dynamics.IsEngineStoped());
+
         if (prevEngineStoped != dynamics.IsEngineStoped() && dynamics.IsEngineStoped())
         {
             scoreEffect.Stalled();

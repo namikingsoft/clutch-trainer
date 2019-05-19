@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class ScoreEffect : MonoBehaviour
 {
-    private Image flushOverlay;
-    private bool isFlushing = false;
+
+    private GameObject pushEnterKeyText;
 
     private GameObject engineStartedText;
     private bool isDoEngineStarted = false;
@@ -16,21 +16,29 @@ public class ScoreEffect : MonoBehaviour
 
     private GameObject ouchText;
     private bool isDoOuch = false;
+    private TransformShaker ouchShaker;
 
     private GameObject gravitateText;
     private bool isDoGravitate = false;
 
-    private TransformShaker ouchShaker;
+    private Image flushOverlay;
+    private bool isFlushing = false;
 
     private void Start()
     {
-        flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
+        pushEnterKeyText = transform.Find("Push Enter Text").gameObject;
         engineStartedText = transform.Find("Engine Started Text").gameObject;
         stalledText = transform.Find("Stalled Text").gameObject;
         ouchText = transform.Find("Ouch Text").gameObject;
         gravitateText = transform.Find("Gravitate Text").gameObject;
+        flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
 
         ouchShaker = new TransformShaker(ouchText.transform);
+    }
+
+    public void SetVisibleOfPushEnter(bool visible)
+    {
+        pushEnterKeyText.SetActive(visible);
     }
 
     public bool EngineStarted()
