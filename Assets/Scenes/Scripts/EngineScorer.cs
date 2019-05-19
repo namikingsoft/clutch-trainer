@@ -5,10 +5,11 @@ public class EngineScorer
 {
     private int sumTickCount = 10; // 0.2 sec on unity
     private float thresholdEngineShaftRPMDiffSumTick = 300f;
+    private float beCalcMinEngineShaftRPM = 1200f; // startRPM + alpha
 
     private Queue<float> engineShaftRPMDiffQueue = new Queue<float>();
 
-    private float previousEngineShaftSpeed;
+    private float previousEngineShaftRPM;
 
     public EngineScorer()
     {
@@ -21,9 +22,11 @@ public class EngineScorer
     // safe less than 1f
     public float CalcEngineShaftRPMScore(int gear, float clutchRate, float engineShaftRPM)
     {
-        engineShaftRPMDiffQueue.Enqueue(Math.Abs(engineShaftRPM - previousEngineShaftSpeed));
+        engineShaftRPMDiffQueue.Enqueue(Math.Abs(engineShaftRPM - previousEngineShaftRPM));
         engineShaftRPMDiffQueue.Dequeue();
-        previousEngineShaftSpeed = engineShaftRPM;
+        previousEngineShaftRPM = engineShaftRPM;
+
+        if (engineShaftRPM < beCalcMinEngineShaftRPM) return 0;
 
         float diffSumTick = 0;
         foreach (float diff in engineShaftRPMDiffQueue)
