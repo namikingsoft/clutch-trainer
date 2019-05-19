@@ -31,16 +31,12 @@ public class TachoMeter : MonoBehaviour
     private void Start()
     {
         needleTransform = transform.Find("Needle");
-        labelTemplateTransform = transform.Find("LabelTemplate");
-        tickTemplateTransform = transform.Find("TickTemplate");
+        labelTemplateTransform = transform.Find("Label Template");
+        tickTemplateTransform = transform.Find("Tick Template");
         if (labelTemplateTransform && labelTemplateTransform.gameObject) labelTemplateTransform.gameObject.SetActive(false);
         if (tickTemplateTransform && tickTemplateTransform.gameObject) tickTemplateTransform.gameObject.SetActive(false);
         CreateLabels();
         CreateTicks();
-    }
-
-    private void Awake()
-    {
     }
 
     private void CreateLabels()

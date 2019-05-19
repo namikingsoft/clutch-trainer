@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7562914679898015480}
   m_Layer: 0
-  m_Name: TickTemplate
+  m_Name: Tick Template
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -405,7 +405,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4006419255332601609}
   m_Layer: 0
-  m_Name: LabelTemplate
+  m_Name: Label Template
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -518,7 +518,7 @@ GameObject:
   - component: {fileID: 2441215333746162464}
   - component: {fileID: 7888356021628215740}
   m_Layer: 0
-  m_Name: UnitText
+  m_Name: Unit Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
