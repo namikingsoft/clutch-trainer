@@ -6,18 +6,24 @@ public class CustomAudio : MonoBehaviour
     private AudioSource engine;
     private AudioSource engineStart;
     private AudioSource gearChange;
+    private AudioSource gearShock;
     private AudioSource gearNoise;
+    private AudioSource gearFit;
 
     private bool isPlayingEngineStart = false;
     private bool isPlayingGearChange = false;
+    private bool isPlayingGearShock = false;
     private bool isPlayingGearNoise = false;
+    private bool isPlayingGearFit = false;
 
     private void Start()
     {
         engine = GetComponents<AudioSource>()[0];
         engineStart = GetComponents<AudioSource>()[1];
         gearChange = GetComponents<AudioSource>()[2];
-        gearNoise = GetComponents<AudioSource>()[3];
+        gearShock = GetComponents<AudioSource>()[3];
+        gearNoise = GetComponents<AudioSource>()[4];
+        gearFit = GetComponents<AudioSource>()[5];
     }
 
     public bool PlayEngineStart()
@@ -50,9 +56,26 @@ public class CustomAudio : MonoBehaviour
         isPlayingGearChange = false;
     }
 
+    public bool PlayGearShock()
+    {
+        if (isPlayingGearShock) return false;
+        StartCoroutine(DoPlayGearShock());
+        return true;
+    }
+    public IEnumerator DoPlayGearShock()
+    {
+        if (isPlayingGearShock) yield break;
+        isPlayingGearShock = true;
+        gearShock.time = 0.2f;
+        gearShock.Play();
+        yield return new WaitForSeconds(0.5f);
+        gearShock.Stop();
+        isPlayingGearShock = false;
+    }
+
     public bool PlayGearNoise()
     {
-        if (isPlayingGearChange) return false;
+        if (isPlayingGearNoise) return false;
         StartCoroutine(DoPlayGearNoise());
         return true;
     }
@@ -60,11 +83,27 @@ public class CustomAudio : MonoBehaviour
     {
         if (isPlayingGearNoise) yield break;
         isPlayingGearNoise = true;
-        gearNoise.time = 0.2f;
+        gearNoise.time = 0.5f;
         gearNoise.Play();
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(1f);
         gearNoise.Stop();
         isPlayingGearNoise = false;
+    }
+
+    public bool PlayGearFit()
+    {
+        if (isPlayingGearFit) return false;
+        StartCoroutine(DoPlayGearFit());
+        return true;
+    }
+    public IEnumerator DoPlayGearFit()
+    {
+        if (isPlayingGearFit) yield break;
+        isPlayingGearFit = true;
+        gearFit.Play();
+        yield return new WaitForSeconds(1f);
+        gearFit.Stop();
+        isPlayingGearFit = false;
     }
 
     public void PitchEngine(float pitch)

@@ -25,6 +25,13 @@ public class ScoreEffect : MonoBehaviour
     private GameObject gravitateText;
     private bool isDoGravitate = false;
 
+    private GameObject awesomeText;
+    private bool isDoAwesome = false;
+
+    private GameObject noviceText;
+    private bool isDoNovice = false;
+    private TransformShaker noviceShaker;
+
     private Image flushOverlay;
     private bool isFlushing = false;
 
@@ -36,10 +43,13 @@ public class ScoreEffect : MonoBehaviour
         ouchText = transform.Find("Ouch Text").gameObject;
         gearShockText = transform.Find("Gear Shock Text").gameObject;
         gravitateText = transform.Find("Gravitate Text").gameObject;
+        awesomeText = transform.Find("Awesome Text").gameObject;
+        noviceText = transform.Find("Novice Text").gameObject;
         flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
 
         ouchShaker = new TransformShaker(ouchText.transform);
         gearShockShaker = new TransformShaker(gearShockText.transform);
+        noviceShaker = new TransformShaker(noviceText.transform);
     }
 
     public void SetVisibleOfPushEnter(bool visible)
@@ -123,7 +133,7 @@ public class ScoreEffect : MonoBehaviour
 
     public bool Gravitate()
     {
-        if (isFlushing) return false;
+        if (isDoGravitate) return false;
         StartCoroutine(DoGravitate());
         return true;
     }
@@ -141,6 +151,44 @@ public class ScoreEffect : MonoBehaviour
         gravitateText.SetActive(false);
 
         isDoGravitate = false;
+    }
+
+    public bool Awesome()
+    {
+        if (isDoAwesome) return false;
+        StartCoroutine(DoAwesome());
+        return true;
+    }
+    public IEnumerator DoAwesome()
+    {
+        if (isDoAwesome) yield break;
+        isDoAwesome = true;
+
+        awesomeText.SetActive(true);
+        StartCoroutine(DoFlush(0.25f, 0.25f));
+        yield return new WaitForSeconds(1.5f);
+        awesomeText.SetActive(false);
+
+        isDoAwesome = false;
+    }
+
+    public bool Novice()
+    {
+        if (isDoNovice) return false;
+        StartCoroutine(DoNovice());
+        return true;
+    }
+    public IEnumerator DoNovice()
+    {
+        if (isDoNovice) yield break;
+        isDoNovice = true;
+
+        noviceText.SetActive(true);
+        StartCoroutine(noviceShaker.Do(1.0f, 1f));
+        yield return new WaitForSeconds(1.5f);
+        noviceText.SetActive(false);
+
+        isDoNovice = false;
     }
 
     private IEnumerator DoFlush(float duration, float strength = 0.5f)

@@ -70,7 +70,7 @@ public class MainController : MonoBehaviour
 
         if (dynamics.GetGear() != input.Gear) // TODO: not garigari?
         {
-            bool canGearChange = clutchScorer.Calculate(
+            bool canGearChange = clutchScorer.CanGearShift(
                 dynamics.GetGear(),
                 input.Gear,
                 input.Clutch,
@@ -79,7 +79,6 @@ public class MainController : MonoBehaviour
                 dynamics.DriveShaftRPM);
             if (canGearChange)
             {
-                scoreEffect.Gravitate();
                 dynamics.ShiftGear(input.Gear);
                 sound.PlayGearChange();
             }
@@ -88,11 +87,36 @@ public class MainController : MonoBehaviour
                 input.Gear = 0;
                 dynamics.ShiftGear(0);
                 scoreEffect.GearShock();
-                sound.PlayGearNoise();
+                sound.PlayGearShock();
                 ui.Shake(0.5f, 10f);
                 input.BumpyTickCount(15, 50);
             }
         }
+
+        ClutchScorer.Technic tech = clutchScorer.JudgeTechnic(
+            dynamics.GetGear(),
+            input.Clutch,
+            dynamics.EngineShaftRPM,
+            dynamics.DriveShaftRPM);
+        switch (tech) {
+            case ClutchScorer.Technic.Gravitate:
+                scoreEffect.Gravitate();
+                sound.PlayGearFit();
+                break;
+            case ClutchScorer.Technic.Awesome:
+                scoreEffect.Awesome();
+                sound.PlayGearFit();
+                break;
+            case ClutchScorer.Technic.Normal:
+                sound.PlayGearFit();
+                break;
+            case ClutchScorer.Technic.Novice:
+                scoreEffect.Novice();
+                sound.PlayGearNoise();
+                break;
+        }
+        if (tech != ClutchScorer.Technic.None) Debug.Log(tech);
+
         dynamics.SetThrottle(input.Accel);
         dynamics.SetBrake(input.Brake);
         dynamics.SetClutch(input.Clutch);

@@ -1,19 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
-using Lib;
+using UnityEngine;
 
 public class ClutchScorer
 {
+    public enum Technic
+    {
+        None,
+        Novice,
+        Normal,
+        Awesome,
+        Gravitate,
+        DoubleAwesome,
+        DoubleGravitate,
+    }
+
+    private const float normalTechDiffRPM = 400f;
+    private const float awesomeTechDiffRPM = 150f;
+    private const float gravitateTechDiffRPM = 30f;
+
     private Dictionary<int, float> gearRatios;
-    private float nonClutchRPMDiff = 50f;
+    private float nonClutchRPMDiff = 30f;
     private float permitShiftGearClutch = 0.1f;
+
+    private int prevGear = 0;
+    private int movedGear = 0;
 
     public ClutchScorer(Dictionary<int, float> gearRatios)
     {
         this.gearRatios = gearRatios;
     }
 
-    public bool Calculate(
+    public bool CanGearShift(
         int currentGear,
         int nextGear,
         float clutchRate,
@@ -35,4 +53,41 @@ public class ClutchScorer
         }
         return false;
     }
+
+    public Technic JudgeTechnic(
+        int gear,
+        float clutchRate,
+        float engineShaftRPM,
+        float driveShaftRPM)
+    {
+        if (gear == 0) return Technic.None;
+
+        int subGear = gear - prevGear;
+        prevGear = gear;
+
+        if (subGear != 0 && clutchRate < permitShiftGearClutch)
+        {
+            movedGear = subGear;
+            return Technic.None;
+        }
+
+        Technic tech = Technic.None;
+        if (movedGear != 0 && clutchRate > permitShiftGearClutch)
+        {
+            float ratio = gearRatios[gear];
+            float expectedClutchShaftRPM = driveShaftRPM * ratio;
+            float diffExpectedRPM = Math.Abs(engineShaftRPM - expectedClutchShaftRPM);
+            Debug.Log(diffExpectedRPM);
+
+            if (gear == 1 && movedGear > 0) tech = Technic.Normal;
+            else if (diffExpectedRPM < gravitateTechDiffRPM) tech = Technic.Gravitate;
+            else if (diffExpectedRPM < awesomeTechDiffRPM) tech = Technic.Awesome;
+            else if (diffExpectedRPM < normalTechDiffRPM) tech = Technic.Normal;
+            else tech = Technic.Novice;
+            movedGear = 0;
+        }
+
+        return tech;
+    }
+
 }
