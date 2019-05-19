@@ -14,6 +14,10 @@ public class ScoreEffect : MonoBehaviour
     private GameObject stalledText;
     private bool isDoStalled = false;
 
+    private GameObject gearShockText;
+    private bool isDoGearShock = false;
+    private TransformShaker gearShockShaker;
+
     private GameObject ouchText;
     private bool isDoOuch = false;
     private TransformShaker ouchShaker;
@@ -30,10 +34,12 @@ public class ScoreEffect : MonoBehaviour
         engineStartedText = transform.Find("Engine Started Text").gameObject;
         stalledText = transform.Find("Stalled Text").gameObject;
         ouchText = transform.Find("Ouch Text").gameObject;
+        gearShockText = transform.Find("Gear Shock Text").gameObject;
         gravitateText = transform.Find("Gravitate Text").gameObject;
         flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
 
         ouchShaker = new TransformShaker(ouchText.transform);
+        gearShockShaker = new TransformShaker(gearShockText.transform);
     }
 
     public void SetVisibleOfPushEnter(bool visible)
@@ -94,6 +100,25 @@ public class ScoreEffect : MonoBehaviour
         ouchText.SetActive(false);
 
         isDoOuch = false;
+    }
+
+    public bool GearShock()
+    {
+        if (isDoGearShock) return false;
+        StartCoroutine(DoGearShock());
+        return true;
+    }
+    public IEnumerator DoGearShock()
+    {
+        if (isDoGearShock) yield break;
+        isDoGearShock = true;
+
+        gearShockText.SetActive(true);
+        StartCoroutine(gearShockShaker.Do(1f, 1.5f));
+        yield return new WaitForSeconds(1f);
+        gearShockText.SetActive(false);
+
+        isDoGearShock = false;
     }
 
     public bool Gravitate()

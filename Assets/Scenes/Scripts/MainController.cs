@@ -85,6 +85,10 @@ public class MainController : MonoBehaviour
             else
             {
                 input.Gear = 0;
+                dynamics.ShiftGear(0);
+                scoreEffect.GearShock();
+                sound.PlayGearNoise();
+                ui.Shake(0.5f, 10f);
                 input.BumpyTickCount(15, 50);
             }
         }
@@ -124,7 +128,11 @@ public class MainController : MonoBehaviour
             dynamics.GetGear(),
             input.Clutch,
             dynamics.EngineShaftRPM);
-        if (engineDiffScore > 1f) scoreEffect.Ouch();
+        if (engineDiffScore > 1f)
+        {
+            scoreEffect.Ouch();
+            ui.Shake(0.3f, engineDiffScore * 5f);
+        }
 
         rpmLabel = "";
         rpmLabel += "engine rpm: " + dynamics.EngineShaftRPM + "\n";
