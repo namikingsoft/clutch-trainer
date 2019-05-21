@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 public class ClutchScorer
 {
@@ -73,15 +72,13 @@ public class ClutchScorer
         }
 
         Technic tech = Technic.None;
-        if (movedGear != 0 && clutchRate > permitShiftGearClutch)
+        if (movedGear != 0 && clutchRate > permitShiftGearClutch && driveShaftRPM >= minScoreDriveShaftRPM)
         {
             float ratio = gearRatios[gear];
             float expectedClutchShaftRPM = driveShaftRPM * ratio;
             float diffExpectedRPM = Math.Abs(engineShaftRPM - expectedClutchShaftRPM);
-            Debug.Log(diffExpectedRPM);
 
-            if ((gear == 1 && movedGear > 0) // easy for talk off
-              || driveShaftRPM < minScoreDriveShaftRPM) tech = Technic.Normal; // normal when stop car
+            if (gear == 1 && movedGear > 0) tech = Technic.Normal; // to easy for talk off
             else if (diffExpectedRPM < gravitateTechDiffRPM) tech = Technic.Gravitate;
             else if (diffExpectedRPM < awesomeTechDiffRPM) tech = Technic.Awesome;
             else if (diffExpectedRPM < normalTechDiffRPM) tech = Technic.Normal;
