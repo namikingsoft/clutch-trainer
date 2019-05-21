@@ -5,11 +5,14 @@
 /[Bb]uilds/
 /Assets/AssetStoreTools*
 
-# Asset Store
+# External Files
 /Assets/Car Engine Sounds - i6 German Free/
 /Assets/Engines/
 /Assets/Logitech SDK/
 /Assets/SkySerie Freebie/
+/Assets/Scenes/Sounds/car-gear-change1.mp3
+/Assets/Scenes/Sounds/ship-big-rudder1.mp3
+/Assets/Scenes/Sounds/keyboard1.mp3
 
 # Visual Studio cache directory
 .vs/
