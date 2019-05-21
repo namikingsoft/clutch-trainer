@@ -34,8 +34,8 @@ public class ShifterHandle : MonoBehaviour
         else if (gear == 2) currentPosition = new Vector2(-23, -38);
         else if (gear == 3) currentPosition = new Vector2(0, 38);
         else if (gear == 4) currentPosition = new Vector2(0, -38);
-        else if (gear == 5) currentPosition = new Vector2(23, 38);
-        else if (gear == 6) currentPosition = new Vector2(23, -38);
+        else if (gear == 5) currentPosition = new Vector2(24, 38);
+        else if (gear == 6) currentPosition = new Vector2(24, -38);
         moveFactor = 0;
     }
 }
