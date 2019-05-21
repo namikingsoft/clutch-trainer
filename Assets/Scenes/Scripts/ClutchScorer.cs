@@ -15,6 +15,7 @@ public class ClutchScorer
         DoubleGravitate,
     }
 
+    private const float minScoreDriveShaftRPM = 100f;
     private const float normalTechDiffRPM = 400f;
     private const float awesomeTechDiffRPM = 150f;
     private const float gravitateTechDiffRPM = 30f;
@@ -79,7 +80,8 @@ public class ClutchScorer
             float diffExpectedRPM = Math.Abs(engineShaftRPM - expectedClutchShaftRPM);
             Debug.Log(diffExpectedRPM);
 
-            if (gear == 1 && movedGear > 0) tech = Technic.Normal;
+            if ((gear == 1 && movedGear > 0) // easy for talk off
+              || driveShaftRPM < minScoreDriveShaftRPM) tech = Technic.Normal; // normal when stop car
             else if (diffExpectedRPM < gravitateTechDiffRPM) tech = Technic.Gravitate;
             else if (diffExpectedRPM < awesomeTechDiffRPM) tech = Technic.Awesome;
             else if (diffExpectedRPM < normalTechDiffRPM) tech = Technic.Normal;
