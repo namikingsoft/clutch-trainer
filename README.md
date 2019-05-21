@@ -42,3 +42,6 @@
 - TypefaceAnimator
     - https://github.com/unity3d-jp/DojoUI1/tree/master/Assets/Fugaku/TypefaceAnimator
 
+## LICENSE
+
+[GNU General Public License (GPL) v3.](http://www.gnu.org/licenses/gpl-3.0.en.html)
