@@ -18,18 +18,15 @@
     - Resolved `DllNotFoundException`
         - https://forum.unity.com/threads/dllnotfoundexception-logitechsteeringwheel-unity5-osx.325894/
 
-### Sound
+### Sounds
 
 - [効果音ラボ](https://soundeffect-lab.info/)
     - 車のギアチェンジ
-        - From: https://soundeffect-lab.info/sound/machine/mp3/car-gear-change1.mp3
-        - To: Assets/Scenes/Sounds/car-gear-change1.mp3
+        - Path to: Assets/Scenes/Sounds/car-gear-change1.mp3
     - 大型船の面舵/取舵一杯
-        - From; https://soundeffect-lab.info/sound/machine/mp3/ship-big-rudder1.mp3
-        - To: Assets/Scenes/Sounds/car-gear-change1.mp3
+        - Path to: Assets/Scenes/Sounds/ship-big-rudder1.mp3
     - キーボード1
-        - From: https://soundeffect-lab.info/sound/machine/mp3/keyboard1.mp3
-        - To: Assets/Scenes/Sounds/keyboard1.mp3
+        - Path to: Assets/Scenes/Sounds/keyboard1.mp3
   -
 ## Thanks for
 
