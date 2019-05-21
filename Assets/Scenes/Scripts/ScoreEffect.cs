@@ -22,6 +22,10 @@ public class ScoreEffect : MonoBehaviour
     private bool isDoOuch = false;
     private TransformShaker ouchShaker;
 
+    private GameObject pleaseNoText;
+    private bool isDoPleaseNo = false;
+    private TransformShaker pleaseNoShaker;
+
     private GameObject gravitateText;
     private bool isDoGravitate = false;
 
@@ -41,6 +45,7 @@ public class ScoreEffect : MonoBehaviour
         engineStartedText = transform.Find("Engine Started Text").gameObject;
         stalledText = transform.Find("Stalled Text").gameObject;
         ouchText = transform.Find("Ouch Text").gameObject;
+        pleaseNoText = transform.Find("Please No Text").gameObject;
         gearShockText = transform.Find("Gear Shock Text").gameObject;
         gravitateText = transform.Find("Gravitate Text").gameObject;
         awesomeText = transform.Find("Awesome Text").gameObject;
@@ -48,6 +53,7 @@ public class ScoreEffect : MonoBehaviour
         flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
 
         ouchShaker = new TransformShaker(ouchText.transform);
+        pleaseNoShaker = new TransformShaker(pleaseNoText.transform);
         gearShockShaker = new TransformShaker(gearShockText.transform);
         noviceShaker = new TransformShaker(noviceText.transform);
     }
@@ -110,6 +116,25 @@ public class ScoreEffect : MonoBehaviour
         ouchText.SetActive(false);
 
         isDoOuch = false;
+    }
+
+    public bool PleaseNo()
+    {
+        if (isDoPleaseNo) return false;
+        StartCoroutine(DoPleaseNo());
+        return true;
+    }
+    public IEnumerator DoPleaseNo()
+    {
+        if (isDoPleaseNo) yield break;
+        isDoPleaseNo = true;
+
+        pleaseNoText.SetActive(true);
+        StartCoroutine(pleaseNoShaker.Do(2.5f, 2.5f));
+        yield return new WaitForSeconds(2.75f);
+        pleaseNoText.SetActive(false);
+
+        isDoPleaseNo = false;
     }
 
     public bool GearShock()

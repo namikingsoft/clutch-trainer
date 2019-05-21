@@ -148,6 +148,12 @@ public class MainController : MonoBehaviour
         particleEmission.rateOverTime = 10 + driveSpeedPerMax * 300;
         ui.ApplySpeedOverlay(driveSpeedPerMax - 0.7f);
 
+        // Please No...
+        if (dynamics.EngineShaftRPM >= dynamics.GetMaxEnginePRM())
+        {
+            scoreEffect.PleaseNo();
+        }
+
         // Engine Score
         float engineDiffScore = engineScorer.CalcEngineShaftRPMScore(
             dynamics.GetGear(),
