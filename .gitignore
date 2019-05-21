@@ -5,6 +5,12 @@
 /[Bb]uilds/
 /Assets/AssetStoreTools*
 
+# Asset Store
+/Assets/Car Engine Sounds - i6 German Free/
+/Assets/Engines/
+/Assets/Logitech SDK/
+/Assets/SkySerie Freebie/
+
 # Visual Studio cache directory
 .vs/
 
