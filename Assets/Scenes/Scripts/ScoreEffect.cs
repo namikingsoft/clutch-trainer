@@ -32,6 +32,9 @@ public class ScoreEffect : MonoBehaviour
     private GameObject awesomeText;
     private bool isDoAwesome = false;
 
+    private GameObject doubleClutchText;
+    private bool isDoDoubleClutch = false;
+
     private GameObject noviceText;
     private bool isDoNovice = false;
     private TransformShaker noviceShaker;
@@ -49,6 +52,7 @@ public class ScoreEffect : MonoBehaviour
         gearShockText = transform.Find("Gear Shock Text").gameObject;
         gravitateText = transform.Find("Gravitate Text").gameObject;
         awesomeText = transform.Find("Awesome Text").gameObject;
+        doubleClutchText = transform.Find("Double Clutch Text").gameObject;
         noviceText = transform.Find("Novice Text").gameObject;
         flushOverlay = transform.Find("Flush Overlay").GetComponent<Image>();
 
@@ -195,6 +199,27 @@ public class ScoreEffect : MonoBehaviour
         awesomeText.SetActive(false);
 
         isDoAwesome = false;
+    }
+
+    public bool DoubleClutch()
+    {
+        if (isDoDoubleClutch) return false;
+        StartCoroutine(DoDoubleClutch());
+        return true;
+    }
+    public IEnumerator DoDoubleClutch()
+    {
+        if (isDoDoubleClutch) yield break;
+        isDoDoubleClutch = true;
+
+        yield return new WaitForSeconds(0.4f);
+        doubleClutchText.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        StartCoroutine(DoFlush(0.5f, 0.5f));
+        yield return new WaitForSeconds(1.4f);
+        doubleClutchText.SetActive(false);
+
+        isDoDoubleClutch = false;
     }
 
     public bool Novice()

@@ -99,8 +99,18 @@ public class MainController : MonoBehaviour
             dynamics.EngineShaftRPM,
             dynamics.DriveShaftRPM);
         switch (tech) {
+            case ClutchScorer.Technic.DoubleGravitate:
+                scoreEffect.Gravitate();
+                scoreEffect.DoubleClutch();
+                sound.PlayGearFit();
+                break;
             case ClutchScorer.Technic.Gravitate:
                 scoreEffect.Gravitate();
+                sound.PlayGearFit();
+                break;
+            case ClutchScorer.Technic.DoubleAwesome:
+                scoreEffect.Awesome();
+                scoreEffect.DoubleClutch();
                 sound.PlayGearFit();
                 break;
             case ClutchScorer.Technic.Awesome:
