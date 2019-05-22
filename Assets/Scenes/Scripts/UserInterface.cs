@@ -44,6 +44,7 @@ public class UserInterface : MonoBehaviour
     public void SetSpeedValue(float value)
     {
         speedMeter.SetValue(value);
+        speedMeter.SetValueText(((int)value).ToString().PadLeft(3, '0'));
     }
 
     public void SetClutchValue(float value)

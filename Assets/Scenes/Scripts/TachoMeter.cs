@@ -19,6 +19,7 @@ public class TachoMeter : MonoBehaviour
     private Transform needleTransform;
     private Transform labelTemplateTransform;
     private Transform tickTemplateTransform;
+    private Text valueText;
 
     public void SetValue(float val)
     {
@@ -28,11 +29,19 @@ public class TachoMeter : MonoBehaviour
         needleTransform.eulerAngles = new Vector3(0, 0, GetRotation());
     }
 
+    public void SetValueText(string text)
+    {
+        valueText.text = text;
+    }
+
     private void Start()
     {
         needleTransform = transform.Find("Needle");
         labelTemplateTransform = transform.Find("Label Template");
         tickTemplateTransform = transform.Find("Tick Template");
+        valueText = transform.Find("Value Text").GetComponent<Text>();
+        valueText.text = "";
+
         if (labelTemplateTransform && labelTemplateTransform.gameObject) labelTemplateTransform.gameObject.SetActive(false);
         if (tickTemplateTransform && tickTemplateTransform.gameObject) tickTemplateTransform.gameObject.SetActive(false);
         CreateLabels();
