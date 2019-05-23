@@ -138,6 +138,13 @@ public class MainController : MonoBehaviour
         ui.SetEngineValue(dynamics.EngineShaftRPM);
         ui.SetSpeedValue(dynamics.DriveMPS);
 
+        ui.SetExpectedEngineValue1(dynamics.DriveShaftRPM * dynamics.GetGearRatios()[1]);
+        ui.SetExpectedEngineValue2(dynamics.DriveShaftRPM * dynamics.GetGearRatios()[2]);
+        ui.SetExpectedEngineValue3(dynamics.DriveShaftRPM * dynamics.GetGearRatios()[3]);
+        ui.SetExpectedEngineValue4(dynamics.DriveShaftRPM * dynamics.GetGearRatios()[4]);
+        ui.SetExpectedEngineValue5(dynamics.DriveShaftRPM * dynamics.GetGearRatios()[5]);
+        ui.SetExpectedEngineValue6(dynamics.DriveShaftRPM * dynamics.GetGearRatios()[6]);
+
         float uiShakeFactor = (engineShaftRPMPerMax - 0.5f) / 0.5f;
         if (uiShakeFactor > 0) ui.Shake(0.1f, uiShakeFactor * 12.5f);
 

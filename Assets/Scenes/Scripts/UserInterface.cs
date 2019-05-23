@@ -13,6 +13,13 @@ public class UserInterface : MonoBehaviour
     private Slider accelSlider;
     private Image speedOverlay;
 
+    private TachoMeter expectedEngineMeter1;
+    private TachoMeter expectedEngineMeter2;
+    private TachoMeter expectedEngineMeter3;
+    private TachoMeter expectedEngineMeter4;
+    private TachoMeter expectedEngineMeter5;
+    private TachoMeter expectedEngineMeter6;
+
     private TransformShaker shaker;
 
     private bool isShaking = false;
@@ -22,6 +29,19 @@ public class UserInterface : MonoBehaviour
         shifterHandle = transform.Find("Shifter").GetComponent<ShifterHandle>();
         engineMeter = transform.Find("Engine Meter").GetComponent<TachoMeter>();
         speedMeter = transform.Find("Speed Meter").GetComponent<TachoMeter>();
+
+        expectedEngineMeter1 = transform.Find("Expected Engine Meter1").GetComponent<TachoMeter>();
+        expectedEngineMeter2 = transform.Find("Expected Engine Meter2").GetComponent<TachoMeter>();
+        expectedEngineMeter3 = transform.Find("Expected Engine Meter3").GetComponent<TachoMeter>();
+        expectedEngineMeter4 = transform.Find("Expected Engine Meter4").GetComponent<TachoMeter>();
+        expectedEngineMeter5 = transform.Find("Expected Engine Meter5").GetComponent<TachoMeter>();
+        expectedEngineMeter6 = transform.Find("Expected Engine Meter6").GetComponent<TachoMeter>();
+        expectedEngineMeter1.SetValueText("1");
+        expectedEngineMeter2.SetValueText("2");
+        expectedEngineMeter3.SetValueText("3");
+        expectedEngineMeter4.SetValueText("4");
+        expectedEngineMeter5.SetValueText("5");
+        expectedEngineMeter6.SetValueText("6");
 
         clutchSlider = transform.Find("Clutch Slider").GetComponent<Slider>();
         brakeSlider = transform.Find("Brake Slider").GetComponent<Slider>();
@@ -45,6 +65,36 @@ public class UserInterface : MonoBehaviour
     {
         speedMeter.SetValue(value);
         speedMeter.SetValueText(((int)value).ToString().PadLeft(3, '0'));
+    }
+
+    public void SetExpectedEngineValue1(float value)
+    {
+        expectedEngineMeter1.SetValue(value);
+    }
+
+    public void SetExpectedEngineValue2(float value)
+    {
+        expectedEngineMeter2.SetValue(value);
+    }
+
+    public void SetExpectedEngineValue3(float value)
+    {
+        expectedEngineMeter3.SetValue(value);
+    }
+
+    public void SetExpectedEngineValue4(float value)
+    {
+        expectedEngineMeter4.SetValue(value);
+    }
+
+    public void SetExpectedEngineValue5(float value)
+    {
+        expectedEngineMeter5.SetValue(value);
+    }
+
+    public void SetExpectedEngineValue6(float value)
+    {
+        expectedEngineMeter6.SetValue(value);
     }
 
     public void SetClutchValue(float value)

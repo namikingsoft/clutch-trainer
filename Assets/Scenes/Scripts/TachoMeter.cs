@@ -15,6 +15,9 @@ public class TachoMeter : MonoBehaviour
     public int LabelAmount = 10;
     public int TickAmount = 10;
 
+    public bool showLabel = true;
+    public bool showTick = true;
+
     private float value = 0;
     private Transform needleTransform;
     private Transform labelTemplateTransform;
@@ -44,8 +47,8 @@ public class TachoMeter : MonoBehaviour
 
         if (labelTemplateTransform && labelTemplateTransform.gameObject) labelTemplateTransform.gameObject.SetActive(false);
         if (tickTemplateTransform && tickTemplateTransform.gameObject) tickTemplateTransform.gameObject.SetActive(false);
-        CreateLabels();
-        CreateTicks();
+        if (showLabel) CreateLabels();
+        if (showTick) CreateTicks();
     }
 
     private void CreateLabels()
