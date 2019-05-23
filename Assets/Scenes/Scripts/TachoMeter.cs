@@ -43,7 +43,6 @@ public class TachoMeter : MonoBehaviour
         labelTemplateTransform = transform.Find("Label Template");
         tickTemplateTransform = transform.Find("Tick Template");
         valueText = transform.Find("Value Text").GetComponent<Text>();
-        valueText.text = "";
 
         if (labelTemplateTransform && labelTemplateTransform.gameObject) labelTemplateTransform.gameObject.SetActive(false);
         if (tickTemplateTransform && tickTemplateTransform.gameObject) tickTemplateTransform.gameObject.SetActive(false);

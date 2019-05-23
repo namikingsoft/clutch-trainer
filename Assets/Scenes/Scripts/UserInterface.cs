@@ -36,12 +36,6 @@ public class UserInterface : MonoBehaviour
         expectedEngineMeter4 = transform.Find("Expected Engine Meter4").GetComponent<TachoMeter>();
         expectedEngineMeter5 = transform.Find("Expected Engine Meter5").GetComponent<TachoMeter>();
         expectedEngineMeter6 = transform.Find("Expected Engine Meter6").GetComponent<TachoMeter>();
-        expectedEngineMeter1.SetValueText("1");
-        expectedEngineMeter2.SetValueText("2");
-        expectedEngineMeter3.SetValueText("3");
-        expectedEngineMeter4.SetValueText("4");
-        expectedEngineMeter5.SetValueText("5");
-        expectedEngineMeter6.SetValueText("6");
 
         clutchSlider = transform.Find("Clutch Slider").GetComponent<Slider>();
         brakeSlider = transform.Find("Brake Slider").GetComponent<Slider>();
