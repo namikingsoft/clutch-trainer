@@ -1,5 +1,24 @@
 # Clutch Trainer
 
+Web GL Demo
+https://namikingsoft.github.io/clutch-trainer
+
+| key | Description |
+|---|---|
+| w | Shift 1 |
+| x | Shift 2 |
+| e | Shift 3 |
+| c | Shift 4 |
+| r | Shift 5 |
+| v | Shift 6 |
+| s,d,f | Shift N |
+| j | Press Clutch |
+| k | Press Brake |
+| l | Press Accel |
+| m | Lock Clutch |
+| , (comma) | Lock Brake |
+| . (period) | Lock Accel |
+
 ## External Files
 
 Download and import required.
