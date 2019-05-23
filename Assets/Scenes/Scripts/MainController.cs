@@ -65,6 +65,7 @@ public class MainController : MonoBehaviour
         if (prevEngineStoped != dynamics.IsEngineStoped() && dynamics.IsEngineStoped())
         {
             scoreEffect.Stalled();
+            ui.Shake(0.2f, 7f);
         }
         prevEngineStoped = dynamics.IsEngineStoped();
 
